@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'BBB/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "Beagle Bone Black"
+  spec.name          = "BBB"
   spec.version       = BBB::VERSION
   spec.authors       = ["Wilco van Duinkerken"]
   spec.email         = ["wilco@sparkboxx.com"]
