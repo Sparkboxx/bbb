@@ -1,6 +1,12 @@
+
 # BBB - BeagleBone Black
 
 Helper functions and modules to ruby around on the beagle bone black.
+
+## Badges
+
+[![Coverage Status](https://coveralls.io/repos/Sparkboxx/bbb/badge.png)](https://coveralls.io/r/Sparkboxx/bbb)
+[![Build Status](https://travis-ci.org/Sparkboxx/bbb.png?branch=master)](https://travis-ci.org/Sparkboxx/bbb)
 
 ## Installation
 
