@@ -108,7 +108,7 @@ module BBB
     def attach(component, options)
 
     end
-  end # Layout
+  end # BBB::Layout
 
   class Application
     board BBB::Board.new
@@ -118,27 +118,30 @@ module BBB
 
     def start
       loop do
-        read
         run
-        write
       end
-    end
-
-    def read
-      board.read
     end
 
     def run
       raise NotImplementedError
     end
 
-    def write
-      board.write
+    def board
+      self.class.board
     end
 
-  end # Application
+    def layout(layout)
+      self.class.board.setup(:layout=>layout)
+    end
+
+    def self.board(board)
+      @board = board
+    end
+
+  end # BBB::Application
 
   class Board
+
     def read
       input_pins.each(&:read)
     end
@@ -150,7 +153,8 @@ module BBB
     def setup(layout)
 
     end
-  end # Board
+
+  end # BBB::Board
 
   class Pin
     def self.factory(klass=:digital, type=:output, opts={})
@@ -178,10 +182,15 @@ module BBB
         def low?
           value == 0
         end
+
+        def value
+          read
+        end
       end
 
-      class Output < Pin
+      class Output < Input
         def write
+
         end
 
         def high
@@ -196,6 +205,7 @@ module BBB
 
         def value=(value)
           @value = value
+          write
         end
       end
 
