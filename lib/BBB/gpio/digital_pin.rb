@@ -1,7 +1,7 @@
 module BBB
   module GPIO
     class DigitalPin < Base
-      attr_reader :mode
+      attr_reader :mode, :io
 
       def initialize(pin_num, mode)
         @pin_num = pin_num
@@ -32,8 +32,10 @@ module BBB
       end
 
       def io
+        return @io unless @io.nil?
+
         value_file     = gpio_pin_dir + "/value"
-        return file_class.open(value_file, file_mode)
+        @io = file_class.open(value_file, file_mode)
       end
 
       private

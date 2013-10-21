@@ -33,7 +33,6 @@ describe BBB::GPIO::DigitalPin do
 
   end
 
-
   context "#set mode" do
     it "should set input mode" do
       pin = digital_pin.new(13, :input)
@@ -48,10 +47,25 @@ describe BBB::GPIO::DigitalPin do
     end
   end
 
-  it "#io" do
+  it "#io input" do
     pin = digital_pin.new(13, :input)
     pin.should_receive(:file_class).and_return(StringIO)
-    pin.io.kind_of?(StringIO).should be_true
+    StringIO.should_receive(:open).with(anything, "r")
+    pin.io
+  end
+
+  it "#io output" do
+    pin = digital_pin.new(13, :output)
+    pin.should_receive(:file_class).and_return(StringIO)
+    StringIO.should_receive(:open).with(anything, "w")
+    pin.io
+  end
+
+  it "should not call the io file twice" do
+    pin = digital_pin.new(13, :output)
+    pin.should_receive(:file_class).and_return(StringIO)
+    StringIO.should_receive(:open).with(anything, "w").once.and_return("foo")
+    pin.io; pin.io
   end
 
 end
