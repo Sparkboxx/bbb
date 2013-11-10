@@ -1,10 +1,15 @@
 module BBB
   module GPIO
     class Base
-      attr_reader :pin_num
+      attr_reader :pin_num, :file_class
 
-      def initialize(pin_num=nil)
+      def initialize(pin_num=nil, opts={})
+        initialize_base(pin_num, opts)
+      end
+
+      def initialize_base(pin_num, opts)
         @pin_num = pin_num
+        @file_class = opts.fetch(:mock, false) ? StringIO : File
       end
 
       def gpio_path
@@ -37,10 +42,6 @@ module BBB
 
       def unexport
         file_class.open(unexport_path, "w") { |f| f.write("#{pin_num}") }
-      end
-
-      def file_class
-        File
       end
     end
   end

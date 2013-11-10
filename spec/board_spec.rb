@@ -16,7 +16,7 @@ describe BBB::Board do
   end
 
   context "settings pins" do
-    Pin = Struct.new(:type, :address, :value)
+    Pin = Struct.new(:mode, :address, :value)
 
     it "define input function for input pin" do
       pin = Pin.new(:input, :P8_1, 1)

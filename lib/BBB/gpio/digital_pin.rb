@@ -3,8 +3,8 @@ module BBB
     class DigitalPin < Base
       attr_reader :mode, :io
 
-      def initialize(pin_num, mode)
-        @pin_num = pin_num
+      def initialize(pin_num, mode, opts={})
+        initialize_base(pin_num, opts)
         @mode = validate_mode(mode)
       end
 
@@ -31,11 +31,25 @@ module BBB
         file_class.open(direction_file, "w") {|f| f.write(direction)}
       end
 
+      def unexport
+        io.close
+        super
+      end
+
       def io
         return @io unless @io.nil?
 
         value_file     = gpio_pin_dir + "/value"
         @io = file_class.open(value_file, file_mode)
+      end
+
+      def write(value)
+        io.write value_map[value]
+        io.flush
+      end
+
+      def read
+        value_map[io.read]
       end
 
       private
@@ -48,6 +62,9 @@ module BBB
         end
       end
 
+      def value_map
+        @value_map ||= {:high=>1, :low=>0, 1=>:high, 0=>:low}
+      end
 
     end
   end

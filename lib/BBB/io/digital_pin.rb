@@ -6,11 +6,20 @@ module BBB
     # https://github.com/hybridgroup/artoo/blob/master/lib/artoo/adaptors/io/digital_pin.rb
     #
     class DigitalPin
-      attr_reader :pin_num, :mode, :pin_io, :status
+      attr_reader :mode, :pin_io, :status
 
-      def initialize(pin_num, mode="r", pin_io=nil)
-        @pin_num = pin_num
-        @pin_io = pin_io || nil
+      ##
+      # Digital pin which is abstracted away from any kind of IO.
+      # This has the benefit of being ablo to write a generic application
+      # that you can then easily port to a BBB, Pi or Arduino
+      #
+      # @param pin_num [Symbol]
+      # @param mode [Symbol, nil] the mode of the pin, :input or :output. Defaults
+      # to :input
+      # @pin_io [IO, nil] the IO object
+      #
+      def initialize(mode=:input, pin_io=nil)
+        @pin_io = pin_io || MockPin.new
         @mode = mode
       end
 
@@ -20,7 +29,6 @@ module BBB
         raise ArgumentError unless [:high, :low].include?(value)
         @status = value
         @pin_io.write(value)
-        @pin_io.flush
       end
 
       # Reads digitally from the specified pin on initialize
@@ -34,6 +42,7 @@ module BBB
       end
       #
       # Sets digital write for the pin to LOW
+      #
       def off!
         write(:low)
       end

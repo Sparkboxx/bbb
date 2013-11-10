@@ -16,7 +16,7 @@ module BBB
 
         define_method("pin#{pin.address.to_s[1..-1]}=") do |value|
           @pins[pin.address].value=value
-        end if pin.type == :output
+        end if pin.mode == :output
       end
       @pins[pin.address] = pin
     end
