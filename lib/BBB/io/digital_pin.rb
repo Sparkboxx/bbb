@@ -6,6 +6,7 @@ module BBB
     # https://github.com/hybridgroup/artoo/blob/master/lib/artoo/adaptors/io/digital_pin.rb
     #
     class DigitalPin
+      include Pinnable
       attr_reader :mode, :pin_io, :status
 
       ##

@@ -1,11 +1,13 @@
 module BBB
   module Components
     class Led
+      include Pinnable
       attr_reader :state, :pin
 
       def initialize
         @state = :low
         @pin = BBB::IO::DigitalPin.new(:output)
+        @pins = [@pin]
       end
 
       def on!

@@ -31,4 +31,15 @@ describe BBB::Components::Led do
     led.state.should eql(:low)
   end
 
+  context "#pinnable include" do
+    it "responds to pinnable actions" do
+      led.respond_to?(:register_pin_positions)
+    end
+
+    it "sets the right pin position" do
+      led.register_pin_positions(:P8_1)
+      led.pin.position.should eql(:P8_1)
+    end
+  end
+
 end
