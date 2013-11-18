@@ -12,9 +12,9 @@ module BBB
   # board. At least, in theory :-)
   #
   # For now the attachment will be made onto specific pin numbers. For the BBB
-  # this might for example be :P8_1, however, the plan is to, in a future
+  # this might for example be :P8_3, however, the plan is to, in a future
   # release, make sure that there are converters between the different kind of
-  # boards.
+  # boards. For example by mapping P8_3 on BBB to P1 on an Arduino.
   #
   # As of now, the act of "attaching" something onto the circuit equals
   # setting up a component with generic pins.
@@ -22,8 +22,8 @@ module BBB
   class Circuit
     attr_reader :components
 
-    def initialize
-      @components = {}
+    def components
+      @components ||= {}
     end
 
     ##
@@ -40,19 +40,31 @@ module BBB
         component = component.new
       end
 
-      if pin_positions = opts[:pins]
+      if pin_positions = opts[:pins] || [opts[:pin]]
         component_pins = component.pins
         verify_pin_argument_count(component_pins.count, pin_positions.count)
         component.register_pin_positions(pin_positions)
       end
+
+      name = opts.fetch(:as)
+      register_component(component, name)
+    end
+
+    def register_component(component, name)
+      components[name] = component
+      eigenclass = class << self; self; end
+      eigenclass.class_eval do
+        define_method(name) do
+          components[name]
+        end
+      end
     end
 
     def verify_pin_argument_count(type_count, position_count)
-      if types_count != positions_count
-        raise PinsDoNoMatchException,
+      if type_count != position_count
+        raise PinsDoNotMatchException,
           "#{object.to_s} requires #{types_count} but received #{position_count} pin arguments."
       end
-
     end
 
 

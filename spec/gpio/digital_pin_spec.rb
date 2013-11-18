@@ -2,15 +2,15 @@ require 'spec_helper'
 
 describe BBB::GPIO::DigitalPin do
   let(:digital_pin) { BBB::GPIO::DigitalPin }
-  let(:input_pin)   { BBB::GPIO::DigitalPin.new(13, :input, mock: true) }
-  let(:output_pin)  { BBB::GPIO::DigitalPin.new(13, :output, mock: true) }
+  let(:input_pin)   { BBB::GPIO::DigitalPin.new(:p8_9, :input, mock: true) }
+  let(:output_pin)  { BBB::GPIO::DigitalPin.new(:p8_3, :output, mock: true) }
 
   it "should initialize with a pin number and mode" do
     lambda{ input_pin }.should_not raise_exception
   end
 
   it "should set the pin number" do
-    input_pin.pin_num.should eql(13)
+    input_pin.position.should eql(:p8_9)
   end
 
   it "should set the mode" do
@@ -18,7 +18,7 @@ describe BBB::GPIO::DigitalPin do
   end
 
   it "initialize with unknown mode pin raises exception" do
-    lambda{ digital_pin.new(13, "unknown") }.should\
+    lambda{ digital_pin.new(:p8_3, "unknown", mock: true) }.should\
       raise_exception(BBB::UnknownPinModeException)
   end
 

@@ -3,8 +3,8 @@ module BBB
     class DigitalPin < Base
       attr_reader :mode, :io
 
-      def initialize(pin_num, mode, opts={})
-        initialize_base(pin_num, opts)
+      def initialize(position, mode, opts={})
+        initialize_base(position, opts)
         @mode = validate_mode(mode)
       end
 

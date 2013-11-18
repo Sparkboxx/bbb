@@ -7,7 +7,7 @@ describe BBB::IO::Pinnable do
 
   it "registers positions" do
     pin = TestPin.new
-    pin.position=:P8_1
-    pin.position.should eql(:P8_1)
+    pin.position=:P8_3
+    pin.position.should eql(:P8_3)
   end
 end

@@ -3,47 +3,45 @@ require 'spec_helper'
 describe BBB::Board do
   let(:bbb) {BBB::Board.new}
 
-  it "initializes with a configuration" do
-    BBB::Board.should_not_receive(:default_gpio)
-    configuration = "SomeConfig"
-    board = BBB::Board.new(configuration)
-    board.gpio.should eql(configuration)
+  it "initializes with a converter" do
+    BBB::Board.should_not_receive(:pin_converter)
+    converter = "SomeConverter"
+    board = BBB::Board.new(converter)
+    board.pin_converter.should eql(converter)
   end
 
   it "initializes with a default configuration" do
-    BBB::Board.should_receive(:default_gpio) { 'Default Config' }
+    BBB::Board.should_receive(:pin_converter) { 'Default Config' }
     board = BBB::Board.new
   end
 
-  context "settings pins" do
-    Pin = Struct.new(:mode, :address, :value)
+  context "setting pins" do
+    Pin = BBB::IO::DigitalPin
 
-    it "define input function for input pin" do
-      pin = Pin.new(:input, :P8_1, 1)
+    it "defines input function for input pin" do
+      pin = Pin.new(:input, nil, :P8_3)
       bbb.setup_pin(pin)
-      bbb.respond_to?("pin8_1").should be_true
+      bbb.respond_to?("p8_3").should be_true
     end
 
-    it "defines output function for output pin" do
-      pin = Pin.new(:output, :P8_2, 1)
+    it "defines output function for input pin" do
+      pin = Pin.new(:output, nil, :P8_3)
       bbb.setup_pin(pin)
-      bbb.respond_to?("pin8_2=").should be_true
-      bbb.pin8_2=0
-      pin.value.should eql(0)
+      bbb.respond_to?("p8_3=").should be_true
     end
 
-    it "defines input function for output pin" do
-      pin = Pin.new(:output, :P8_2, 1)
+    it "enables output function for output pin" do
+      pin = Pin.new(:output, nil, :P8_3)
       bbb.setup_pin(pin)
-      bbb.respond_to?("pin8_2").should be_true
-      bbb.pin8_2.should eql(1)
+      bbb.p8_3=:low
+      pin.status.should eql(:low)
     end
 
     it "should keep the reference to the pin" do
-      pin = Pin.new(:output, :P8_2, 1)
-      bbb.setup_pin(pin)
-      pin.value=0
-      bbb.pin8_2.should eql(0)
+      pin = Pin.new(:output, nil, :P8_4)
+      bbb.connect_io_pin(pin)
+      pin.write :high
+      bbb.p8_4.should eql(:high)
     end
 
   end

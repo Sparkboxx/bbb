@@ -37,8 +37,8 @@ describe BBB::Components::Led do
     end
 
     it "sets the right pin position" do
-      led.register_pin_positions(:P8_1)
-      led.pin.position.should eql(:P8_1)
+      led.register_pin_positions(:P8_3)
+      led.pin.position.should eql(:P8_3)
     end
   end
 

@@ -12,8 +12,8 @@ describe BBB::Components::Pinnable do
 
   it "knows how to register pins" do
     comp = DummyComponent.new
-    comp.register_pin_positions(:P8_1, :P8_2)
-    comp.pins[0].position.should eql(:P8_1)
-    comp.pins[1].position.should eql(:P8_2)
+    comp.register_pin_positions(:P8_3, :P8_4)
+    comp.pins[0].position.should eql(:P8_3)
+    comp.pins[1].position.should eql(:P8_4)
   end
 end

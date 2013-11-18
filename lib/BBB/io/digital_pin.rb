@@ -7,11 +7,12 @@ module BBB
     #
     class DigitalPin
       include Pinnable
-      attr_reader :mode, :pin_io, :status
+      attr_reader :mode, :status
+      attr_accessor :pin_io
 
       ##
       # Digital pin which is abstracted away from any kind of IO.
-      # This has the benefit of being ablo to write a generic application
+      # This has the benefit of being able to write a generic application
       # that you can then easily port to a BBB, Pi or Arduino
       #
       # @param pin_num [Symbol]
@@ -19,9 +20,10 @@ module BBB
       # to :input
       # @pin_io [IO, nil] the IO object
       #
-      def initialize(mode=:input, pin_io=nil)
+      def initialize(mode=:input, pin_io=nil, position=nil)
         @pin_io = pin_io || MockPin.new
         @mode = mode
+        @position = position
       end
 
       # Writes to the specified pin Digitally
@@ -55,7 +57,6 @@ module BBB
       def off?
         !self.on?
       end
-
 
     end
   end

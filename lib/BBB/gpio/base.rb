@@ -1,15 +1,22 @@
 module BBB
   module GPIO
     class Base
-      attr_reader :pin_num, :file_class
+      attr_reader :position, :converted_position
+      attr_reader :file_class
 
-      def initialize(pin_num=nil, opts={})
-        initialize_base(pin_num, opts)
+      def initialize(position=nil, opts={})
+        initialize_base(position, opts)
       end
 
-      def initialize_base(pin_num, opts)
-        @pin_num = pin_num
-        @file_class = opts.fetch(:mock, false) ? StringIO : File
+      def initialize_base(pin_position, opts)
+        @mock = opts.fetch(:mock, false)
+        self.position = pin_position
+        @file_class = @mock ? StringIO : File
+      end
+
+      def position=(position, mock=false)
+        @position = position
+        @converted_position = PinMapper.map(position)
       end
 
       def gpio_path
@@ -33,15 +40,15 @@ module BBB
       end
 
       def gpio_pin_dir
-        "#{gpio_path}/gpio#{pin_num}"
+        "#{gpio_path}/gpio#{converted_position}"
       end
 
       def export
-        file_class.open(export_path, "w") { |f| f.write("#{ pin_num }") }
+        file_class.open(export_path, "w") { |f| f.write("#{ converted_position }") }
       end
 
       def unexport
-        file_class.open(unexport_path, "w") { |f| f.write("#{pin_num}") }
+        file_class.open(unexport_path, "w") { |f| f.write("#{converted_position}") }
       end
     end
   end

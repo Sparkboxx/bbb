@@ -75,7 +75,7 @@ module BBB
 
     def self.map(pin_symbol)
       begin
-        PINS.fetch(pin_symbol)
+        PINS.fetch(pin_symbol.upcase.to_sym)
       rescue Exception => e
         raise UnknownPinException, "Pin #{pin_symbol} could not be mapped"
       end

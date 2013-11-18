@@ -4,6 +4,7 @@ module BBB
       attr_reader :pins
 
       def register_pin_positions(*positions)
+        positions.flatten!
         pins.each_with_index do |pin, index|
           pin.position=positions[index]
         end
