@@ -6,6 +6,7 @@ module BBB
       def initialize(position, mode, opts={})
         initialize_base(position, opts)
         @mode = validate_mode(mode)
+        set_mode
       end
 
       def direction
@@ -22,18 +23,13 @@ module BBB
         when :input
           "r"
         when :output
-          "w"
+          "w+"
         end
       end
 
       def set_mode
         direction_file = gpio_pin_dir + "/direction"
-        file_class.open(direction_file, "w") {|f| f.write(direction)}
-      end
-
-      def unexport
-        io.close
-        super
+        file_class.open(direction_file, "w") {|f| f.write(direction); f.flush}
       end
 
       def io
@@ -44,11 +40,13 @@ module BBB
       end
 
       def write(value)
+        io.rewind
         io.write value_map[value]
         io.flush
       end
 
       def read
+	io.rewind
         value_map[io.read]
       end
 

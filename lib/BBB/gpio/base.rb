@@ -12,6 +12,7 @@ module BBB
         @mock = opts.fetch(:mock, false)
         self.position = pin_position
         @file_class = @mock ? StringIO : File
+	export
       end
 
       def position=(position, mock=false)

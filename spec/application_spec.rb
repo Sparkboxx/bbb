@@ -48,7 +48,6 @@ describe BBB::Application do
 
     app.circuit.respond_to?(:led).should be_true
     app.circuit.led.should_receive(:on!)
-
     app.board.p8_3.should_receive(:write).with(:high)
 
     app.led.on!

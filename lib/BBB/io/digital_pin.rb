@@ -36,7 +36,11 @@ module BBB
 
       # Reads digitally from the specified pin on initialize
       def read
-        @pin_io.read
+	if mode == :input
+	  pin_io.read
+	else
+          status
+	end
       end
 
       # Sets digital write for the pin to HIGH

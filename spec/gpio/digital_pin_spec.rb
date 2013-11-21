@@ -54,32 +54,19 @@ describe BBB::GPIO::DigitalPin do
 
   it "#io output" do
     pin = output_pin
-    StringIO.should_receive(:open).with(anything, "w")
+    StringIO.should_receive(:open).with(anything, "w+")
     pin.io
   end
 
   it "should not call the io file twice" do
     pin = output_pin
-    StringIO.should_receive(:open).with(anything, "w").once.and_return("foo")
+    StringIO.should_receive(:open).with(anything, "w+").once.and_return("foo")
     pin.io; pin.io
   end
-
-  it "should close the file handle of io at unexport" do
-    pin = output_pin
-    pin.io.should_receive(:close)
-    pin.unexport
-  end
-
 
   it "should write :low as 0 to io" do
     pin = output_pin
     pin.io.should_receive(:write).with(0)
-    pin.write(:low)
-  end
-
-  it "should flush after writing to io" do
-    pin = output_pin
-    pin.io.should_receive(:flush)
     pin.write(:low)
   end
 
