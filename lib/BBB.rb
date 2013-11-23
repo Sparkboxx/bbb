@@ -1,5 +1,6 @@
 require "BBB/version"
 require "BBB/board"
+require "BBB/test_board"
 require "BBB/circuit"
 require "BBB/pin_mapper"
 require "BBB/exceptions"
