@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe BBB::Board do
-  let(:bbb) {BBB::Board.new}
+  let(:bbb) {BBB::TestBoard.new}
 
   it "initializes with a converter" do
     BBB::Board.should_not_receive(:pin_converter)
