@@ -20,9 +20,13 @@ module BBB
     end
 
     def self.connect
-      @_circuit.components.values.each do |component|
+      @_circuit.components.each_pair do |name, component|
         component.pins.each do |pin|
           @_board.connect_io_pin(pin)
+        end
+
+        define_method(name) do
+          circuit.send(name)
         end
       end
     end

@@ -35,11 +35,8 @@ describe BBB::Application do
     end
   end
 
-  class TestBoard < BBB::Board
-  end
-
   class TestConnectionApp < BBB::Application
-    board TestBoard.new
+    board BBB::TestBoard.new
     circuit TestLedCircuit.new
   end
 
@@ -48,7 +45,7 @@ describe BBB::Application do
 
     app.circuit.respond_to?(:led).should be_true
     app.circuit.led.should_receive(:on!)
-    app.board.p8_3.should_receive(:write).with(:high)
+    app.led.should eql(app.circuit.led)
 
     app.led.on!
   end
