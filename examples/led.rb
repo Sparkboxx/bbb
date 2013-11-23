@@ -18,7 +18,7 @@ class LedExampleApplication < BBB::Application
   board BBB::Board.new
 
   # Connection the led circuit
-  circuit LedExample::Circuit.new
+  circuit Circuit.new
 
   # This is the basic run loop
   def run

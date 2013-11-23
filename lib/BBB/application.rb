@@ -39,6 +39,16 @@ module BBB
       @circuit ||= self.class._circuit
     end
 
+    def start
+      loop do
+        run
+      end
+    end
+
+    def run
+      raise NotImplementedError
+    end
+
 
   end
 end
