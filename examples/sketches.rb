@@ -73,8 +73,8 @@ module Thunderball
 
   def Stabalizer
     def initialize(opts={})
-      @escs = opts[:escs]
-      @gyo = opts[:gyro]
+      @escs          = opts[:escs]
+      @gyo           = opts[:gyro]
       @accelerometer = opts[:accelerometer]
     end
 
