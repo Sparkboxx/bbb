@@ -6,7 +6,7 @@ require 'BBB'
 class Circuit < BBB::Circuit
   def initialize
     # Attach temperature sensor to pin P9_40
-    attach BBB::Components::Analog, pin: :P9_40, as: :thermometer
+    attach BBB::Components::AnalogComponent, pin: :P9_40, as: :thermometer
   end
 end
 
