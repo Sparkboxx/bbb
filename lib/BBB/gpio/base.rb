@@ -12,12 +12,12 @@ module BBB
         @mock = opts.fetch(:mock, false)
         self.position = pin_position
         @file_class = @mock ? StringIO : File
-	export
+        export
       end
 
       def position=(position, mock=false)
         @position = position
-        @converted_position = PinMapper.map(position)
+        @converted_position = Board::PinMapper.map(position).gpio
       end
 
       def gpio_path

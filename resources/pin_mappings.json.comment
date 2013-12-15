@@ -1,0 +1,14 @@
+//
+// 2013-11-30
+//
+// pin_mappings.json edited from the original Bonescript pin mapping file,
+// bone.js. The original can be found here:
+// https://github.com/jadonk/bonescript/blob/9c72cfe66fed6b2a4810471d1d0cc0a333bc24eb/node_modules/bonescript/bone.js
+//
+// The changes are:
+// * remove javascript stuff, and turn it into JSON
+//
+// The JSON has the following main keys:
+// * pinIndex key
+// * uarts key
+// * i2c

@@ -1,18 +1,18 @@
 require 'spec_helper'
 
-describe BBB::Board do
-  let(:bbb) {BBB::TestBoard.new}
+describe BBB::Board::Base do
+  let(:bbb) {BBB::Board::TestBoard.new}
 
   it "initializes with a converter" do
-    BBB::Board.should_not_receive(:pin_converter)
+    BBB::Board::Base.should_not_receive(:pin_converter)
     converter = "SomeConverter"
-    board = BBB::Board.new(converter)
+    board = BBB::Board::Base.new(converter)
     board.pin_converter.should eql(converter)
   end
 
   it "initializes with a default configuration" do
-    BBB::Board.should_receive(:pin_converter) { 'Default Config' }
-    board = BBB::Board.new
+    BBB::Board::Base.should_receive(:pin_converter) { 'Default Config' }
+    board = BBB::Board::Base.new
   end
 
   context "setting pins" do

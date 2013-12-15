@@ -36,7 +36,7 @@ describe BBB::Application do
   end
 
   class TestConnectionApp < BBB::Application
-    board BBB::TestBoard.new
+    board BBB::Board::TestBoard.new
     circuit TestLedCircuit.new
   end
 
