@@ -5,7 +5,8 @@ module BBB
       # Thanks to BoneScript, see the resources/pin_mappings.json.comment
       # for reference to the original BoneScript file.
       #
-      MAP = JSONPinMapper.convert("resources/pin_mappings.json")
+      pin_mapping_file = File.expand_path("../../../../resources/pin_mappings.json", __FILE__)
+      MAP = JSONPinMapper.convert(pin_mapping_file)
 
       def self.map(pin_symbol, type=:gpio)
         begin
