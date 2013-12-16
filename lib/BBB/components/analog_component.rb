@@ -7,6 +7,7 @@ module BBB
 
       def initialize
         @pin = BBB::IO::AnalogPin.new
+        @pins = [@pin]
       end
 
       def read
