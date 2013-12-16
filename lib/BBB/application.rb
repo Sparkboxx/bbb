@@ -49,6 +49,5 @@ module BBB
       raise NotImplementedError
     end
 
-
   end
 end
