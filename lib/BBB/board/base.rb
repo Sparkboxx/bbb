@@ -30,8 +30,8 @@ module BBB
       end
 
       def connect_io_pin(pin)
-        gpio_pin   = pin_converter.convert(pin)
-        pin.pin_io = gpio_pin
+        converted_pin   = pin_converter.convert(pin)
+        pin.pin_io = converted_pin
         setup_pin(pin)
       end
 
