@@ -12,7 +12,11 @@ module BBB
       #
       def convert(pin, opts={})
         base_class = pin.class.to_s.split("::").last
-        klass =  GPIO::const_get(base_class.to_sym)
+        if GPIO.const_defined?(base_class)
+          klass = GPIO::const_get(base_class.to_sym)
+        elsif ADC.const_defined?(base_class)
+          klass = ADC::const_get(base_class.to_sym)
+        end
         opts = {:mock=>mock}.merge(opts)
         return klass.new(pin.position, pin.mode, opts)
       end
