@@ -15,7 +15,7 @@ end
 #
 class TemperatureExampleApp < BBB::Application
   # Run this on the BeagleBoneBlack
-  board BBB::Board.new
+  board BBB::Board::Base.new
 
   # Connect the circuit to the board
   circuit Circuit.new

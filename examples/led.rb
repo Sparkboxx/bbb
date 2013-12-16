@@ -15,7 +15,7 @@ end
 #
 class LedExampleApplication < BBB::Application
   # Run this on the BeableBoneBlack
-  board BBB::Board.new
+  board BBB::Board::Base.new
 
   # Connect the led circuit
   circuit Circuit.new
