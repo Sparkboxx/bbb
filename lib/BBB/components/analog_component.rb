@@ -3,7 +3,7 @@ module BBB
     class AnalogComponent
       include Pinnable
 
-      attr_reader :pin
+      attr_reader :pin, :pins
 
       def initialize
         @pin = BBB::IO::AnalogPin.new
