@@ -36,8 +36,12 @@ describe BBB::Application do
   end
 
   class TestConnectionApp < BBB::Application
-    board BBB::Board::TestBoard.new
+    board   BBB::Board::TestBoard.new
     circuit TestLedCircuit.new
+
+    def run
+      "yeah, this one!"
+    end
   end
 
   it "attaches virtual pins to board pins" do
@@ -48,6 +52,20 @@ describe BBB::Application do
     app.led.should eql(app.circuit.led)
 
     app.led.on!
+  end
+
+  class FunctionsInApp < BBB::Application
+    board   BBB::Board::TestBoard.new
+    circuit TestLedCircuit.new
+
+    def run
+      raise StopIteration
+    end
+  end
+
+  it "does run the re-implemented run method" do
+    app = FunctionsInApp.new
+    lambda{app.start}.should_not raise_error
   end
 
 end
