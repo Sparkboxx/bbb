@@ -4,6 +4,7 @@ module BBB
       include Pinnable
 
       attr_reader :pin_io, :position
+      attr_accessor :pin_io
 
       def initialize(pin_io=nil, position=nil)
         @pin_io = pin_io || MockPin.new

@@ -25,7 +25,7 @@ module BBB
 
           define_method("p#{pin.position.to_s[1..-1]}=") do |value|
             @pins[pin.position].write value
-          end if pin.mode == :output
+          end if pin.respond_to?(:mode) && pin.mode == :output
         end
       end
 

@@ -22,7 +22,7 @@ class TemperatureExampleApp < BBB::Application
 
   # This is the basic run loop
   def run
-    puts thermometer.read
+    puts "value: #{thermometer.read}\r"
   end
 end
 

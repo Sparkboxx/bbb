@@ -25,6 +25,7 @@ module BBB
       end
 
       def read
+        file_handle.rewind
         file_handle.read
       end
 
