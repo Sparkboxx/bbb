@@ -26,7 +26,7 @@ module BBB
 
       def read
         file_handle.rewind
-        file_handle.read
+        file_handle.read.to_i
       end
 
       def scale

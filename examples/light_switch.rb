@@ -26,30 +26,31 @@ require 'BBB'
 class Circuit < BBB::Circuit
   def initialize
     # Attach temperature sensor to pin P9_40
-    attach BBB::Components::AnalogComponent, pin: :P9_40, as: :thermometer
+    attach BBB::Components::AnalogComponent, pin: :P9_40, as: :ldr
+    attach BBB::Components::Led, pin: :P8_10, as: :led
   end
 end
 
 ##
 # Setup the actual Applicaiton
 #
-class TemperatureExampleApp < BBB::Application
+class LightSwitch < BBB::Application
   # Run this on the BeagleBoneBlack
   board BBB::Board::Base.new
 
   # Connect the circuit to the board
   circuit Circuit.new
 
-  def initialize
-  end
-
-
   # This is the basic run loop
   def run
-    print "value: #{thermometer.read}\r"
+    if ldr.read < 70
+      led.on!
+    else
+      led.off!
+    end
   end
 end
 
 # Initialize the app
-app = TemperatureExampleApp.new
+app = LightSwitch.new
 app.start
