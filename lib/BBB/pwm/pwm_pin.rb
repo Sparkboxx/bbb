@@ -21,7 +21,7 @@ module BBB
         @position = position
       end
 
-      def pwm_path
+      def pwm_path(mock=false)
         @pwm_path ||= Dir.glob("/sys/devices/ocp.*/pwm_test_#{pin_map.key}.*")
       end
 
@@ -32,7 +32,7 @@ module BBB
         files = %w(duty, period, polarity, run)
 
         files.each do |file|
-          if mock
+          unless mock
             file_path = File.expand_path(file, pwm_path)
             handles[file.to_sym] = File.open(file_path, "w")
           else
@@ -64,13 +64,12 @@ module BBB
         `echo bone_pwm_#{pin_map.key} > #{dir}`
       end
 
-      private
-
       def write(symbol, value)
         handle = file_handles[:duty]
         handle.rewind
         handle.write(value)
         handle.flush
+        return value
       end
 
     end
