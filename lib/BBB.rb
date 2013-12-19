@@ -17,6 +17,8 @@ require "BBB/gpio/pin_converter"
 require "BBB/adc/setup"
 require "BBB/adc/analog_pin"
 
+require "BBB/pwm/pwm_pin"
+
 require "BBB/io/pinnable"
 require "BBB/io/digital_pin"
 require "BBB/io/analog_pin"

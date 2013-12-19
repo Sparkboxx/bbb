@@ -85,13 +85,13 @@ describe BBB::ADC::AnalogPin do
 
   it "#read calls the file handle" do
     p = pin
-    p.file_handle.should_receive(:read).and_return("bazinga")
-    p.read.should eql("bazinga")
+    p.file_handle.should_receive(:read).and_return("12")
+    p.read.should eql(12)
   end
 
   it "#ain_path calls the map" do
+    pin.pin_map.should_receive(:ain)
     path = pin.ain_path
-    path.should eql("/sys/devices/ocp.3/helper.15/AIN0")
   end
 
   it "#scale tells the scale" do

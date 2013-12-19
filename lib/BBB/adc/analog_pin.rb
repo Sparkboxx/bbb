@@ -21,7 +21,8 @@ module BBB
       end
 
       def ain_path
-        "/sys/devices/ocp.3/helper.15/AIN#{pin_map.ain}"
+        dir = Dir.glob("/sys/devices/ocp.*/helper.*/")
+        return File.expand_path("AIN#{pin_map.ain}", dir.first)
       end
 
       def read
@@ -34,9 +35,18 @@ module BBB
       end
 
       def get_file_handle(mock=false)
-        mock ? StringIO.new : File.open(ain_path, "r")
+        unless mock
+          export
+          return File.open(ain_path, "r")
+        else
+          return StringIO.new
+        end
       end
 
+      def export
+        dir = Dir.glob("/sys/devices/bone_capemgr.*/slots")
+        `echo cape-bone-iio > #{dir}`
+      end
     end
   end
 end

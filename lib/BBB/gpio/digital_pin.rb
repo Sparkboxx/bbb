@@ -46,7 +46,7 @@ module BBB
       end
 
       def read
-	io.rewind
+        io.rewind
         value_map[io.read]
       end
 
