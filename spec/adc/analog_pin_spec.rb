@@ -25,6 +25,7 @@ describe BBB::ADC::AnalogPin do
       before :each do
         pin_class.any_instance.should_receive(:ain_path).and_return("some/file")
         File.should_receive(:open).with("some/file","r").and_return(StringIO.new("foo"))
+        pin_class.any_instance.should_receive(:export).and_return(1)
       end
 
       it "gets file handle" do
@@ -59,12 +60,14 @@ describe BBB::ADC::AnalogPin do
 
     it "gets a File handle if explicit no mock" do
       File.should_receive(:open).and_return("file")
+      pin_class.any_instance.should_receive(:export).and_return(1)
       handle = @p.get_file_handle(false)
       handle.should eql("file")
     end
 
     it "gets a File by default" do
       File.should_receive(:open).and_return("file")
+      pin_class.any_instance.should_receive(:export).and_return(1)
       handle = @p.get_file_handle
       handle.should eql("file")
     end

@@ -44,7 +44,11 @@ module BBB
       end
 
       def export
-        dir = Dir.glob("/sys/devices/bone_capemgr.*/slots")
+        cape_dir = "/sys/devices/bone_capemgr.*/slots"
+        dir = Dir.glob(cape_dir)
+        if dir.length == 0
+          raise BoardError, "unable to access the capemgr directory: #{cape_dir}"
+        end
         `echo cape-bone-iio > #{dir}`
       end
     end
