@@ -28,6 +28,7 @@ describe BBB::PWM::PWMPin do
         File.should_receive(:open)
           .exactly(4).times
           .and_return("foo")
+        pin_class.any_instance.should_receive(:export).and_return(1)
       end
 
       it "gets file handles" do
@@ -64,7 +65,8 @@ describe BBB::PWM::PWMPin do
 
     it "gets a File handle if explicit no mock" do
       File.should_receive(:open).exactly(4).times.and_return("file")
-      Dir.should_receive(:glob).exactly(2).times.and_return("")
+      Dir.should_receive(:glob).exactly(1).times.and_return("tmp/")
+      pin_class.any_instance.should_receive(:export).and_return(1)
       handles = @p.get_file_handles(false)
       handles.values.uniq.count.should eql(1)
       handles.values.uniq.first.should eql("file")

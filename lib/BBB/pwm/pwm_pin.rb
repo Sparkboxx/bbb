@@ -60,8 +60,12 @@ module BBB
       end
 
       def export
-        dir = Dir.glob("/sys/devices/bone_capemgr.*/slots")
-        `echo bone_pwm_#{pin_map.key} > #{dir}`
+        cape_dir = "/sys/devices/bone_capemgr.*/slots"
+        dir = Dir.glob(cape_dir)
+        if dir.length == 0
+          raise BoardError, "unable to access the capemgr directory: #{cape_dir}"
+        end
+        system("echo bone_pwm_#{pin_map.key} > #{dir}")
       end
 
       def write(symbol, value)

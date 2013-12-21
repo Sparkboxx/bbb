@@ -22,6 +22,7 @@ require "BBB/pwm/pwm_pin"
 require "BBB/io/pinnable"
 require "BBB/io/digital_pin"
 require "BBB/io/analog_pin"
+require "BBB/io/pwm_pin"
 require "BBB/io/mock_pin"
 
 require "BBB/components/pinnable"
