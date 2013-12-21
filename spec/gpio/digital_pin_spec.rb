@@ -34,28 +34,6 @@ describe BBB::GPIO::DigitalPin do
     end
   end
 
-  context "#set mode" do
-    ##
-    # Temporarily disabled because of inability to catch results of
-    # StringIO.open. Possible solution is factoring out the direction_file
-    # argument and then use a real file system call to a different file to test
-    # this.
-    xit "should set input mode" do
-      pin = input_pin
-      pin.set_mode.string.should eql(pin.direction.size)
-    end
-
-    ##
-    # Temporarily disabled because of inability to catch results of
-    # StringIO.open. Possible solution is factoring out the direction_file
-    # argument and then use a real file system call to a different file to test
-    # this.
-    xit "should set output mode" do
-      pin = output_pin
-      pin.set_mode.string.should eql(pin.direction.size)
-    end
-  end
-
   it "#io input" do
     pin = input_pin
     StringIO.should_receive(:open).with(anything, "r")

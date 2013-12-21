@@ -19,18 +19,6 @@ describe BBB::GPIO::Base do
     BBB::GPIO::Base.new(:p8_3, mock: true).file_class.should eql(StringIO)
   end
 
-  # Temporarily disabled, because of inability to mock the call to the
-  # gpio files
-  xit "should default to File class" do
-    BBB::GPIO::Base.new(:p8_3).file_class.should eql(File)
-  end
-
-  # Temporarily disabled, because of inability to mock the call to the
-  # gpio files
-  xit "should be able to explicitly set non mock File class" do
-    BBB::GPIO::Base.new(:p8_3, mock: false).file_class.should eql(File)
-  end
-
   it "should have a file_class" do
     gpio_base.respond_to?(:file_class).should be_true
   end
