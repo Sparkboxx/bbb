@@ -1,9 +1,9 @@
 module BBB
   module IO
     ##
-    # Credit goes to the great work done at the Artoo framework
-    # The original idea for this class came from them.
-    # https://github.com/hybridgroup/artoo/blob/master/lib/artoo/adaptors/io/digital_pin.rb
+    # Digital pin which is abstracted away from any kind of IO.
+    # This has the benefit of being able to write a generic application
+    # that you can then easily port to a BBB, Pi or Arduino
     #
     class DigitalPin
       include Pinnable
@@ -11,9 +11,7 @@ module BBB
       attr_accessor :pin_io
 
       ##
-      # Digital pin which is abstracted away from any kind of IO.
-      # This has the benefit of being able to write a generic application
-      # that you can then easily port to a BBB, Pi or Arduino
+      # Initialize a digital pin.
       #
       # @param pin_num [Symbol]
       # @param mode [Symbol, nil] the mode of the pin, :input or :output. Defaults
