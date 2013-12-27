@@ -6,9 +6,8 @@ module BBB
       attr_reader :pin, :pins
 
       def initialize
-        @pin = BBB::IO::PWMPin.new
+        @pin = BBB::Pins::PWMPin
         @pins = [@pin]
-        after_attachment_callback
       end
 
       def after_attachment_callback

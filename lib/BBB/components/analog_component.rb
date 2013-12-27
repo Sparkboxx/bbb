@@ -6,7 +6,7 @@ module BBB
       attr_reader :pin, :pins
 
       def initialize
-        @pin = BBB::IO::AnalogPin.new
+        @pin = BBB::Pins::AnalogPin
         @pins = [@pin]
       end
 
