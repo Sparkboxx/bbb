@@ -2,16 +2,18 @@ module BBB
   module Pins
     module IO
       class GPIO
-        attr_reader :direction, :file_mode
+        include Mapped
+
+        attr_reader :file_mode, :converted_position
 
         def initialize(direction, position)
           self.direction = direction
-          @converted_position = PinMapper.map(position).gpio
+          @converted_position = pin_map.gpio
           self.export
         end
 
         def direction=(direction)
-          @filemode  = direction == :input ? "r" : "w+"
+          @file_mode  = direction == :input ? "r" : "w+"
           @direction = direction
         end
 

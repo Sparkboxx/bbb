@@ -1,22 +1,14 @@
 module BBB
   module Pins
     module IO
-      class ADC
+      class AIN
+        include Mapped
+
         attr_reader :io
 
         def initialize(position)
           self.export
           @io = get_file_handle
-        end
-
-        def pin_map(position)
-          return @pin_map unless @pin_map.nil?
-          map = PinMapper.map(position, :ain)
-          unless map.respond_to?(:ain) && !map.ain.nil?
-            raise ArgumentError, "#{position} is not a valid AIN pin position"
-          end
-
-          @pin_map = map
         end
 
         def read

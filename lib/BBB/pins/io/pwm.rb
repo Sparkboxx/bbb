@@ -2,6 +2,8 @@ module BBB
   module Pins
     module IO
       class PWM
+        include Mapped
+
         attr_reader :handles
 
         def initialize(position)
@@ -9,19 +11,9 @@ module BBB
           @handles = get_file_handles
         end
 
-        def pin_map(position)
-          return @pin_map unless @pin_map.nil?
-          map = PinMapper.map(position, :pwm)
-          unless map.respond_to?(:pwm) && !map.pwm.nil?
-            raise ArgumentError, "#{position} is not a valid PWM pin position"
-          end
-
-          @pin_map = map
-        end
-
-        def pwm_path
-          return @pwm_path unless @pwm_path.nil?
-          @pwm_path = Dir.glob("/sys/devices/ocp.*/pwm_test_#{pin_map.key}.*")
+        def path
+          return @path unless @path.nil?
+          @path = Dir.glob("/sys/devices/ocp.*/pwm_test_#{pin_map.key}.*")
         end
 
         def get_file_handles
@@ -29,7 +21,7 @@ module BBB
           files = %w(duty, period, polarity, run)
 
           files.each do |file|
-            file_path = File.expand_path(file, pwm_path)
+            file_path = File.expand_path(file, path)
             handles[file.to_sym] = File.open(file_path, "w")
           end
 
@@ -46,7 +38,7 @@ module BBB
         end
 
         def write(symbol, value)
-          handle = file_handles[:duty]
+          handle = file_handles[symbol]
           handle.rewind
           handle.write(value)
           handle.flush
