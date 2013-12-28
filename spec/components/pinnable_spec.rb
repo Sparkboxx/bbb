@@ -1,19 +1,84 @@
 require 'spec_helper'
 
 describe BBB::Components::Pinnable do
+  class DummyPin
+    include BBB::Pins::Pinnable
+  end
+
   class DummyComponent
     include BBB::Components::Pinnable
+    uses DummyPin
+  end
 
-    def initialize
-      pin = Struct.new(:position)
-      @pins = [pin.new(0), pin.new(1)]
+  class DoubleDummyComponent
+    include BBB::Components::Pinnable
+    uses DummyPin, DummyPin
+  end
+
+  let(:dummy) { DummyComponent }
+  let(:double_dummy) { DoubleDummyComponent }
+
+  context "#initialize_pins" do
+    it "with single position" do
+      DummyPin.should_receive(:new).once.and_return(@mock_pin)
+      c = dummy.new
+      c.initialize_pins(:P8_3)
+      c.pins[0].should eql(@mock_pin)
+    end
+
+    it "with single position and options" do
+      DummyPin.should_receive(:new).with(:P8_3, {:key=>"value"}).once
+        .and_return(@mock_pin)
+      c = dummy.new
+      c.initialize_pins(:P8_3, key: "value")
+      c.pins[0].should eql(@mock_pin)
+    end
+
+    it "with multiple positions" do
+      DummyPin.should_receive(:new).exactly(2).times.and_return(@mock_pin)
+      c = double_dummy.new
+      c.initialize_pins(:P8_3, :P8_4)
+      c.pins[0].should eql(@mock_pin)
+      c.pins[1].should eql(@mock_pin)
+    end
+
+    it "with multiple positions and options" do
+      DummyPin.should_receive(:new).with(:P8_3, {:key=>"value"}).once
+        .and_return(@mock_pin)
+      DummyPin.should_receive(:new).with(:P8_4, {:key=>"value"}).once
+        .and_return(@mock_pin)
+      c = double_dummy.new
+      c.initialize_pins(:P8_3, :P8_4, key: "value")
+      c.pins[0].should eql(@mock_pin)
+      c.pins[1].should eql(@mock_pin)
+    end
+
+    it "verifies the pin count" do
+      c = dummy.new
+      c.should_receive(:verify_pin_position_count).with([:P8_3])
+      c.initialize_pins(:P8_3)
     end
   end
 
-  it "knows how to register pins" do
-    comp = DummyComponent.new
-    comp.register_pin_positions(:P8_3, :P8_4)
-    comp.pins[0].position.should eql(:P8_3)
-    comp.pins[1].position.should eql(:P8_4)
+  context "#verify_pin_position_count" do
+
+    it "raises exception when counts don't match" do
+      c = dummy.new
+      lambda do
+        c.verify_pin_position_count([:foo, :bar])
+      end.should raise_exception(BBB::PinsDoNotMatchException)
+    end
+
+    it "does not raise an exception when counts do match" do
+      c = dummy.new
+      lambda do
+        c.verify_pin_position_count([:foo])
+      end.should_not raise_exception
+    end
+  end
+
+  it "should respond to pinnable?" do
+    c = dummy.new
+    c.pinnable?.should be_true
   end
 end

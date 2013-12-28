@@ -3,15 +3,15 @@ module BBB
 
     def self.circuit(circuit)
       @_circuit = circuit
-      define_convenience_methods
+      define_convenience_methods(circuit)
     end
 
     def self._circuit
       @_circuit
     end
 
-    def self.defince_convenience_methods
-      @_circuit.components.keys do |name|
+    def self.define_convenience_methods(c)
+      c.components.keys.each do |name|
         define_method(name) do
           circuit.send(name)
         end

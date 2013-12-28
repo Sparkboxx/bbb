@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe BBB::Circuit do
-  let(:circuit) {BBB::Circuit.new}
   let(:c) { BBB::Circuit.new }
   # You can't really avoid some integration testing here
   let(:led) { BBB::Components::Led }

@@ -48,7 +48,7 @@ module BBB
         def read(symbol)
           handle = handles[symbol]
           handle.rewind
-          handle.read
+          handle.read.to_i
         end
       end
     end

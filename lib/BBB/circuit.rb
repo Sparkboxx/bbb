@@ -36,7 +36,7 @@ module BBB
     def attach(component, opts={})
       name          = opts.delete(:as)
       component     = component.new if component.kind_of?(Class)
-      pin_positions = opts.delete(:pins, nil) || [opts.delete(:pin)]
+      pin_positions = opts.delete(:pins) || [opts.delete(:pin)]
       pin_options   = {:mock=>self.mock?}.merge!(opts)
 
       component.initialize_pins(pin_positions, pin_options)

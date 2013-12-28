@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe BBB::Board::PinMapper do
-  let(:mapper) { BBB::Board::PinMapper }
+describe BBB::Pins::IO::PinMapper do
+  let(:mapper) { BBB::Pins::IO::PinMapper }
 
   it "should be able to map" do
     mapper.map(:P8_3).gpio.should eql(38)

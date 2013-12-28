@@ -6,7 +6,8 @@ require "BBB/circuit"
 require "BBB/exceptions"
 
 require "BBB/pins/io/pin_mapper"
-require "BBB/pins/io/adc"
+require "BBB/pins/io/mapped"
+require "BBB/pins/io/ain"
 require "BBB/pins/io/gpio"
 require "BBB/pins/io/pwm"
 

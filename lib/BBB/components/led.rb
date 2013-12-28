@@ -1,26 +1,59 @@
 module BBB
   module Components
+    ##
+    # The LED class is the component interface into a digital pin. In a way it's
+    # nothing more than a straight forward port of a digital pin. You can use a
+    # led component when you want to use digital pins, or simply define your own
+    # class and extend it from the LED.
+    #
+    # The Led class does not perform any sort of caching or smart calls, it
+    # forwards everything to the pin. In your own applications you might want to
+    # tune this behavior by adding some kind of caching.
+    #
     class Led
       include Pinnable
-      attr_reader :pin
 
-      def initialize
-        @pin = BBB::Pins::DigitalOutputPin
-        @pins = [@pin]
+      uses BBB::Pins::DigitalOutputPin
+
+      ##
+      # Convenience method to grab the first pin in the pins array
+      #
+      # @return BBB::Pins::DigitalOutputPin
+      #
+      def pin
+        pins.first
       end
 
+      ##
+      # Turns on the LED
+      # @return void
+      #
       def on!
         pin.on!
       end
 
+      ##
+      # Turns off the LED
+      # @return void
+      #
       def off!
         pin.off!
       end
 
+      ##
+      # Checks if the LED is turned on.
+      #
+      # @return Boolean
+      #
       def on?
         pin.on?
       end
 
+      ##
+      # Checks if the LED is turned off.
+      #
+      # @return Boolean
+      #
       def off?
         pin.off?
       end

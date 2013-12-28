@@ -12,7 +12,7 @@ module BBB
       # a helper class to get from JSON to Ruby.
       #
       class PinMapper
-        PIN_MAP_FILE = File.expand_path("../../../../resources/pin_mappings.json", __FILE__)
+        PIN_MAP_FILE = File.expand_path("../../../../../resources/pin_mappings.json", __FILE__)
 
         class PinMap < Struct.new(:pins, :uart, :i2c); end
 
