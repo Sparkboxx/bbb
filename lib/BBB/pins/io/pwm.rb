@@ -4,16 +4,17 @@ module BBB
       class PWM
         include Mapped
 
-        attr_reader :handles
+        attr_reader :handles, :position
 
         def initialize(position)
+          @position = position
           self.export
           @handles = get_file_handles
         end
 
         def path
           return @path unless @path.nil?
-          @path = Dir.glob("/sys/devices/ocp.*/pwm_test_#{pin_map.key}.*")
+          @path = Dir.glob("/sys/devices/ocp.*/pwm_test_#{pin_map.key}.*").first
         end
 
         def get_file_handles
@@ -34,8 +35,8 @@ module BBB
           if dir.length == 0
             raise BoardError, "unable to access the capemgr directory: #{cape_dir}"
           end
-          system("echo am33xx_pwm > #{dir}")
-          system("echo bone_pwm_#{pin_map.key} > #{dir}")
+          system("echo am33xx_pwm > #{dir.first}")
+          system("echo bone_pwm_#{pin_map.key} > #{dir.first}")
         end
 
         def write(symbol, value)

@@ -39,8 +39,12 @@ module BBB
       #
       # @return [Symbol] :high or :low
       #
-      def read
-        direction == :input ? io.read : status
+      def status
+        if direction == :input
+          @status = io.read
+        end
+
+        return @status
       end
 
       ##
@@ -68,7 +72,7 @@ module BBB
       # Check if the pin state is low
       # @return [Boolean]
       def off?
-        status == :low
+        !on?
       end
 
       private

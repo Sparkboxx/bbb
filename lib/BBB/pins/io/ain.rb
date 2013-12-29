@@ -4,16 +4,17 @@ module BBB
       class AIN
         include Mapped
 
-        attr_reader :io
+        attr_reader :io, :position
 
         def initialize(position)
+          @position = position
           self.export
           @io = get_file_handle
         end
 
         def read
-          file_handle.rewind
-          file_handle.read.to_i
+          io.rewind
+          io.read.to_i
         end
 
         def scale
@@ -26,7 +27,7 @@ module BBB
           if dir.length == 0
             raise BoardError, "unable to access the capemgr directory: #{cape_dir}"
           end
-          `echo cape-bone-iio > #{dir}`
+          `echo cape-bone-iio > #{dir.first}`
         end
 
         def get_file_handle

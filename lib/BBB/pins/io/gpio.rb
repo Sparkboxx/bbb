@@ -4,7 +4,7 @@ module BBB
       class GPIO
         include Mapped
 
-        attr_reader :file_mode, :converted_position, :position
+        attr_reader :file_mode, :converted_position, :position, :direction
 
         def initialize(direction, position)
           self.direction = direction
@@ -14,19 +14,24 @@ module BBB
         end
 
         def direction=(direction)
-          @file_mode  = direction == :input ? "r" : "w+"
+          @file_mode = direction == :input ? "r" : "w+"
           @direction = direction
         end
 
         def set_mode
           direction_file = gpio_pin_dir + "/direction"
-          file_class.open(direction_file, "w") {|f| f.write(direction); f.flush}
+          file_class.open(direction_file, "w") {|f| f.write(direction)}
         end
 
         def io
           return @io unless @io.nil?
           value_file = gpio_pin_dir + "/value"
           @io = file_class.open(value_file, file_mode)
+        end
+
+        def write(value)
+          io.write(value_map[value])
+          io.flush
         end
 
         def read
@@ -56,6 +61,7 @@ module BBB
 
         def export
           file_class.open(export_path, "w") { |f| f.write("#{ converted_position }") }
+          set_mode
         end
 
         def unexport

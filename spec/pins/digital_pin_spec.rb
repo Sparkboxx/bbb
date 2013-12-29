@@ -26,19 +26,14 @@ describe BBB::Pins::DigitalPin do
 
   context "input pins" do
 
-    it "#read forwards to io" do
+    it "#status forwards to io" do
       input.io.should_receive(:read)
-      input.read
+      input.status
     end
 
   end
 
   context "output pins" do
-
-    it "#read reads from status" do
-      output.should_receive(:status)
-      output.read
-    end
 
     it "#off! #on!" do
       output.off!
