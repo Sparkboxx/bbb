@@ -2,7 +2,7 @@ module BBB
   module Components
     class Servo
       include Pinnable
-      #uses Pins::PWMPin
+      uses Pins::PWMPin
       attr_reader :min_duty, :max_duty, :period
 
       def initialize(period=17e6, min_duty=14.6e6, max_duty=16.6e6)
