@@ -8,7 +8,7 @@ module BBB
 
         def initialize(direction, position)
           self.direction = direction
-          @converted_position = pin_map.gpio
+          @converted_position = pin_map(position).gpio
           self.export
         end
 

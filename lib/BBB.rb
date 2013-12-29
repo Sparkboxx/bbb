@@ -1,4 +1,5 @@
 require "json"
+require "stringio"
 
 require "BBB/version"
 
