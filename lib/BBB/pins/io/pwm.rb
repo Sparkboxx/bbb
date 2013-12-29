@@ -35,8 +35,10 @@ module BBB
           if dir.length == 0
             raise BoardError, "unable to access the capemgr directory: #{cape_dir}"
           end
+
+          pin_map_key = pin_map.key # This calls the pin map, which raises an error in case pin can't be mapped.
           system("echo am33xx_pwm > #{dir.first}")
-          system("echo bone_pwm_#{pin_map.key} > #{dir.first}")
+          system("echo bone_pwm_#{pin_map_key} > #{dir.first}")
         end
 
         def write(symbol, value)
