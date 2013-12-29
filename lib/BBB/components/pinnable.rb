@@ -56,6 +56,7 @@ module BBB
         self.class.pins.each_with_index do |pin, index|
           @pins << pin.new(positions[index], opts)
         end
+        after_pin_initialization
       end
 
       ##
@@ -78,6 +79,13 @@ module BBB
           raise PinsDoNotMatchException,
             "#{self.class.to_s} requires #{self.class.pins.count} but received #{positions.count} pin position."
         end
+      end
+
+      ##
+      # Method which classes can overwrite to hook into the after pin
+      # initialization
+      #
+      def after_pin_initialization
       end
 
       ##

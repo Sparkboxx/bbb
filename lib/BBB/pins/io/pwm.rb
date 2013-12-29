@@ -34,6 +34,7 @@ module BBB
           if dir.length == 0
             raise BoardError, "unable to access the capemgr directory: #{cape_dir}"
           end
+          system("echo am33xx_pwm > #{dir}")
           system("echo bone_pwm_#{pin_map.key} > #{dir}")
         end
 
