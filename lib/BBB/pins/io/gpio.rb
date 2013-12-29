@@ -4,11 +4,12 @@ module BBB
       class GPIO
         include Mapped
 
-        attr_reader :file_mode, :converted_position
+        attr_reader :file_mode, :converted_position, :position
 
         def initialize(direction, position)
           self.direction = direction
-          @converted_position = pin_map(position).gpio
+          @position = position
+          @converted_position = pin_map.gpio
           self.export
         end
 
