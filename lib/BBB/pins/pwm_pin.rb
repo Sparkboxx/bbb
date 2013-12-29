@@ -13,6 +13,10 @@ module BBB
         end
       end
 
+      def period_hz(herz)
+        self.period = 1/herz*10e9
+      end
+
       private
 
       def default_io

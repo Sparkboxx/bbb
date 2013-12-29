@@ -19,11 +19,11 @@ module BBB
 
         def get_file_handles
           handles = {}
-          files = %w(duty, period, polarity, run)
+          files = %w(duty period polarity run)
 
           files.each do |file|
             file_path = File.expand_path(file, path)
-            handles[file.to_sym] = File.open(file_path, "w")
+            handles[file.to_sym] = File.open(file_path, "r+")
           end
 
           return handles
@@ -42,7 +42,7 @@ module BBB
         end
 
         def write(symbol, value)
-          handle = file_handles[symbol]
+          handle = handles[symbol]
           handle.rewind
           handle.write(value)
           handle.flush
