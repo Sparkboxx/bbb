@@ -2,35 +2,40 @@ module BBB
   module Components
     class Servo
       include Pinnable
-      uses Pins::PWMPin
+      #uses Pins::PWMPin
+      attr_reader :min_duty, :max_duty, :period
 
-      attr_reader :min, :max, :period
-
-      def after_pin_initialization
-        pin.period = 17e9
-        pin.duty   = (min + range / 2).to_i
-        pin.run    = 1
+      def initialize(period=17e6, min_duty=14.6e6, max_duty=16.6e6)
+        @period   = period
+        @min_duty = min_duty
+        @max_duty = max_duty
       end
 
-      def write(degrees)
-        value = degrees.to_f / 360.to_f * range + min
-        pin.write(value)
+      def after_pin_initialization
+        pin.period = 17e6
+        pin.duty   = (min_duty + duty_range / 2)
+        pin.run    = 0
+      end
+
+      def angle(degrees)
+        value = degrees / 180.to_f * duty_range + min_duty
+        pin.duty = value
+      end
+
+      def activate!
+        pin.run = 1
+      end
+
+      def deactivate!
+        pin.run = 0
       end
 
       def pin
         pins.first
       end
 
-      def min
-        14.6e6.to_i
-      end
-
-      def max
-        16.6e6.to_i
-      end
-
-      def range
-        max-min
+      def duty_range
+        max_duty - min_duty
       end
 
     end

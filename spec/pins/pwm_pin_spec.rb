@@ -12,6 +12,11 @@ describe BBB::Pins::PWMPin do
       pin.public_send("#{method}=", 123)
       pin.public_send(method).should eql(123)
     end
+
+    it "##{method}=(value) converts to ints" do
+      pin.public_send("#{method}=", 123.123)
+      pin.public_send(method).should eql(123)
+    end
   end
 
   context "private methods" do

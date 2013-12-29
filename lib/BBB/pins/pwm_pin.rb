@@ -5,7 +5,7 @@ module BBB
 
       %w(duty polarity period run).each do |method|
         define_method("#{method}=".to_sym) do |value|
-          io.write(method.to_sym, value)
+          io.write(method.to_sym, value.to_i)
         end
 
         define_method(method.to_sym) do
