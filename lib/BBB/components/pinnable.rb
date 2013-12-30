@@ -48,6 +48,7 @@ module BBB
       # @return Array[Pins]
       #
       def initialize_pins(*positions)
+        positions.flatten!
         opts = positions.last.kind_of?(Hash) ? positions.pop : {}
 
         verify_pin_position_count(positions)
