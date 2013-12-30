@@ -14,12 +14,15 @@ module BBB
       def after_pin_initialization
         pin.period = 17e6
         pin.duty   = (min_duty + duty_range / 2)
-        pin.run    = 0
+        pin.run    = 1
       end
 
       def angle(degrees)
-        value = degrees / 180.to_f * duty_range + min_duty
-        pin.duty = value
+        pin.duty = degrees_to_ns(degrees)
+      end
+
+      def degrees_to_ns(degrees)
+        degrees / 180.to_f * duty_range + min_duty
       end
 
       def activate!
