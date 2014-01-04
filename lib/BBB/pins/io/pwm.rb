@@ -44,8 +44,11 @@ module BBB
         def write(symbol, value)
           handle = handles[symbol]
           handle.rewind
-          handle.write(value)
-          handle.flush
+          begin
+            handle.write(value)
+          rescue Errno::EINVAL
+            puts "Could not write the value #{value} to the handle #{symbol}"
+          end
           return value
         end
 
