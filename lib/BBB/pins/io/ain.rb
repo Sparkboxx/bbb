@@ -3,6 +3,7 @@ module BBB
     module IO
       class AIN
         include Mapped
+        include Cape
 
         attr_reader :io, :position
 
@@ -22,12 +23,7 @@ module BBB
         end
 
         def export
-          cape_dir = "/sys/devices/bone_capemgr.*/slots"
-          dir = Dir.glob(cape_dir)
-          if dir.length == 0
-            raise BoardError, "unable to access the capemgr directory: #{cape_dir}"
-          end
-          `echo cape-bone-iio > #{dir.first}`
+          `echo cape-bone-iio > #{cape_dir}`
         end
 
         def get_file_handle

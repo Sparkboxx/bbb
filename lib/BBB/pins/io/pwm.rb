@@ -3,6 +3,7 @@ module BBB
     module IO
       class PWM
         include Mapped
+        include Cape
 
         attr_reader :handles, :position
 
@@ -32,15 +33,10 @@ module BBB
         end
 
         def export
-          cape_dir = "/sys/devices/bone_capemgr.*/slots"
-          dir = Dir.glob(cape_dir)
-          if dir.length == 0
-            raise BoardError, "unable to access the capemgr directory: #{cape_dir}"
-          end
-
           pin_map_key = pin_map.key # This calls the pin map, which raises an error in case pin can't be mapped.
-          system("echo am33xx_pwm > #{dir.first}")
-          system("echo bone_pwm_#{pin_map_key} > #{dir.first}")
+
+          system("echo am33xx_pwm > #{cape_dir}")
+          system("echo bone_pwm_#{pin_map_key} > #{cape_dir}")
           sleep(0.2) # This seems to be necessary for te driver to load
         end
 
