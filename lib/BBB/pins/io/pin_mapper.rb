@@ -159,6 +159,30 @@ module BBB
         #      "scl": "P9_17"
         #  }
         #
+        # Mind you, the mapping actually turns some of these keys around. The
+        # resulting hash takes the "devicetree" as the main key, and adds the
+        # key of the JSON object "/dev/i2c-1" as the value of the key
+        # :filesystem in the resulting hash. So, to follow the example above,
+        # the "mapping" of the example above is:
+        #
+        #  @example
+        #   i2c            = I2C.new
+        #   i2c.devicetree = "BBB-I2C1"
+        #   i2c.filesystem = "/dev/i2c-1"
+        #   i2c.path       = "/dev/i2c-2",
+        #   i2c.sda        = "P9_18"
+        #   i2c.scl        = "P9_17"
+        #
+        #   map = {:'BB-I2C1' => i2c}
+        #
+        # ** Beware **
+        #
+        # The filesystem and path properties are not always the same! Check for
+        # example the i2c-1, it is found under the JSON key of /dev/i2c-1 but
+        # maps it's path to /dev/i2c-2. It's rather odd...
+        #
+        # ** End of Beware **
+        #
         # @param [Hash] data_hash with strings as keys and hashes as values
         #
         # @return [Hash] with strings of I2C folders as keys and I2C objects as
