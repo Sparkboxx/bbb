@@ -27,11 +27,13 @@ module BBB
           return @io unless @io.nil?
           value_file = gpio_pin_dir + "/value"
           @io = file_class.open(value_file, file_mode)
+          @io.sync = true
+
+          return @io
         end
 
         def write(value)
           io.write(value_map[value])
-          io.flush
         end
 
         def read

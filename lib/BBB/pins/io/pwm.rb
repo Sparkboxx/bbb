@@ -23,7 +23,9 @@ module BBB
 
           files.each do |file|
             file_path = File.expand_path(file, path)
-            handles[file.to_sym] = File.open(file_path, "r+")
+            f = File.open(file_path, "r+")
+            f.sync = true
+            handles[file.to_sym] = f
           end
 
           return handles
