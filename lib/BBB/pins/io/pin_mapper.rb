@@ -18,8 +18,8 @@ module BBB
 
         class Pin    < Struct.new(:name, :gpio, :led, :mux, :key, :mux_reg_offset,
                                   :options, :eeprom, :pwm, :ain, :scale); end
-        class UART   < Struct.new(:devicetree, :rx, :tx); end
-        class I2C    < Struct.new(:devicetree, :path, :sda, :scl); end
+        class UART   < Struct.new(:devicetree, :rx, :tx, :filesystem); end
+        class I2C    < Struct.new(:devicetree, :path, :sda, :scl, :filesystem); end
 
         attr_reader :data
 
@@ -58,7 +58,11 @@ module BBB
         def self.map(pin_symbol)
           @map ||= convert(PIN_MAP_FILE)
           begin
-            @map.pins.fetch(pin_symbol.upcase.to_sym)
+            sym = pin_symbol.upcase.to_sym
+            map = @map.pins.fetch(sym, nil)
+            map = @map.i2c.fetch(sym) if map.nil?
+
+            return map
           rescue Exception => e
             raise UnknownPinException, "Pin #{pin_symbol} could not be mapped"
           end
@@ -177,8 +181,9 @@ module BBB
             info_hash.each_pair do |key, value|
               instance[key] = value
             end
+            instance[:filesystem] = filesystem
 
-            hash[filesystem] = instance
+            hash[instance.devicetree] = instance
           end
 
           return hash
@@ -187,7 +192,7 @@ module BBB
         ##
         # Makes an underscored, lowercase form from the expression in the string.
         #
-        # Gracefully copied from ActiveSupport::Inflections
+        # Copied from ActiveSupport::Inflections
         # http://api.rubyonrails.org/classes/ActiveSupport/Inflector.html#method-i-underscore
         #
         # Changes '::' to '/' to convert namespaces to paths.
