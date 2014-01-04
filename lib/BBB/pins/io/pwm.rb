@@ -41,6 +41,7 @@ module BBB
           pin_map_key = pin_map.key # This calls the pin map, which raises an error in case pin can't be mapped.
           system("echo am33xx_pwm > #{dir.first}")
           system("echo bone_pwm_#{pin_map_key} > #{dir.first}")
+          sleep(0.2) # This seems to be necessary for te driver to load
         end
 
         def write(symbol, value)
