@@ -33,7 +33,9 @@ module BBB
         def get_file_handle
           dir  = Dir.glob("/sys/devices/ocp.*/helper.*/")
           file = File.expand_path("AIN#{pin_map.ain}", dir.first)
-          return File.open(file, "r")
+          file = File.open(file, "r")
+          file.sync = true
+          return file
         end
 
         def self.setup
