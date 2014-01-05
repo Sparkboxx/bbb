@@ -58,7 +58,7 @@ module BBB
         def self.map(pin_symbol)
           @map ||= convert(PIN_MAP_FILE)
           begin
-            sym = pin_symbol.upcase.to_sym
+            sym = pin_symbol.upcase
             map = @map.pins.fetch(sym, nil)
             map = @map.i2c.fetch(sym) if map.nil?
 
@@ -167,7 +167,7 @@ module BBB
         #
         #  @example
         #   i2c            = I2C.new
-        #   i2c.devicetree = "BBB-I2C1"
+        #   i2c.devicetree = "BB-I2C1"
         #   i2c.filesystem = "/dev/i2c-1"
         #   i2c.path       = "/dev/i2c-2",
         #   i2c.sda        = "P9_18"

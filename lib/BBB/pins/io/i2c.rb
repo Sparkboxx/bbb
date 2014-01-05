@@ -1,3 +1,5 @@
+require 'i2c'
+
 module BBB
   module Pins
     module IO
@@ -38,6 +40,10 @@ module BBB
 
         def read(address, size, *params)
           @backend.read(address, size, params)
+        end
+
+        def pin_map_key
+          :devicetree
         end
 
       end

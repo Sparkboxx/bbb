@@ -12,6 +12,7 @@ require "BBB/pins/io/cape"
 require "BBB/pins/io/ain"
 require "BBB/pins/io/gpio"
 require "BBB/pins/io/pwm"
+require "BBB/pins/io/i2c"
 
 require "BBB/pins/pinnable"
 require "BBB/pins/digital_pin"
