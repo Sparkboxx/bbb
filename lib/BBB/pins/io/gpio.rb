@@ -20,7 +20,11 @@ module BBB
 
         def set_mode
           direction_file = gpio_pin_dir + "/direction"
-          file_class.open(direction_file, "w") {|f| f.write(direction)}
+
+          d = "in"  if direction == :input
+          d = "out" if direction == :output
+
+          file_class.open(direction_file, "w") {|f| f.write(d)}
         end
 
         def io

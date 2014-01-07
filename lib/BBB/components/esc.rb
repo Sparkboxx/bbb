@@ -21,7 +21,7 @@ module BBB
       end
 
       def speed(value)
-        self.duty = min_duty + value * duty_range
+        self.duty = min_duty + value * self.duty_range
       end
 
       def duty=(value)
