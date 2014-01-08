@@ -2,26 +2,54 @@ module BBB
   module Components
     class ESC
       include Pinnable
-      uses Pins::PWMPin, Pins::DigitalOutputPin
+      uses Pins::PWMPin
 
       attr_accessor :min_duty, :max_duty, :period
       attr_reader :duty
 
-      def initialize(period=20e6, min_duty=18e6, max_duty=19e6)
+      def initialize(period=20e6, min_duty=17.5e6, max_duty=19e6)
         @period   = period
         @min_duty = min_duty
         @max_duty = max_duty
       end
 
       def after_pin_initialization
-        power.off!
+        self.disarm
         self.period = @period
-        self.duty = min_duty
-        pwm.run    = 1
+        self.duty   = max_duty
       end
 
       def speed(value)
-        self.duty = min_duty + value * self.duty_range
+        self.duty = max_value - value * self.duty_range
+      end
+
+      def calibrate
+        pwm.run = 0
+        puts "Disconnect the battery of the motor"; gets
+        puts "Get ready to connect the battery after 2 seconds, ready?"; gets
+        speed(1)
+        pwm.run = 1
+        puts "one missisipi"; sleep(1)
+        puts "two missisipi"; sleep(1)
+        puts "connect the battery"; sleep(1)
+        speed(0)
+        puts "Calibrated and ready to go"
+      end
+
+      def arm
+        pwm.run=1
+      end
+
+      def armed?
+        pwm.run == 1
+      end
+
+      def disarm
+        pwm.run=0
+      end
+
+      def disarmed?
+        !armed?
       end
 
       def duty=(value)
@@ -41,11 +69,6 @@ module BBB
       def pwm
         pins.first
       end
-
-      def power
-        pins.last
-      end
-
     end
   end
 end
