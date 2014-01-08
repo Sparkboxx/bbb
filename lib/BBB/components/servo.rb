@@ -3,12 +3,18 @@ module BBB
     class Servo
       include Pinnable
       uses Pins::PWMPin
-      attr_reader :min_duty, :max_duty, :period
+      attr_reader :min_duty, :max_duty, :period, :max_degrees
 
-      def initialize(period=17e6, min_duty=14.6e6, max_duty=16.6e6)
+      ##
+      # Min duty and max duty for FS5103B servo
+      # duty cycle of 900 to 2100 ms for 120 degrees
+      # http://www.servodatabase.com/servo/feetech/fs5103b
+      #
+      def initialize(period=20e6, min_duty=17.9e6, max_duty=19.1e6, max_degrees=120)
         @period   = period
         @min_duty = min_duty
         @max_duty = max_duty
+        @max_degrees = 120
       end
 
       def after_pin_initialization
@@ -22,7 +28,7 @@ module BBB
       end
 
       def degrees_to_ns(degrees)
-        degrees / 180.to_f * duty_range + min_duty
+        degrees / max_degrees.to_f * duty_range + min_duty
       end
 
       def activate!

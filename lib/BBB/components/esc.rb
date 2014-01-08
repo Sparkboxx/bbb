@@ -7,7 +7,7 @@ module BBB
       attr_accessor :min_duty, :max_duty, :period
       attr_reader :duty
 
-      def initialize(period=10e6, min_duty=0.8e6, max_duty=2e6)
+      def initialize(period=20e6, min_duty=18e6, max_duty=19e6)
         @period   = period
         @min_duty = min_duty
         @max_duty = max_duty
@@ -15,8 +15,8 @@ module BBB
 
       def after_pin_initialization
         power.off!
-        pwm.period = period
-        pwm.duty   = min_duty
+        self.period = @period
+        self.duty = min_duty
         pwm.run    = 1
       end
 
@@ -27,6 +27,11 @@ module BBB
       def duty=(value)
         @duty = value
         pwm.duty = @duty
+      end
+
+      def period=(value)
+        @period = value
+        pwm.period = value
       end
 
       def duty_range
