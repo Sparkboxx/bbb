@@ -40,7 +40,7 @@ module BBB
       end
 
       def set_extension(reading)
-        @extension_set = reading.bytes[5] & 0b00000001
+        @extension_set = reading.bytes[4] & 0b00000001
       end
 
       def i2c
