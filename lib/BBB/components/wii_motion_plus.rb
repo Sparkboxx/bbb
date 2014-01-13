@@ -50,7 +50,7 @@ module BBB
       class AxisValue
         attr_reader :value, :slow, :zero_value
 
-        MAX_AMPLITUDE   = 8192
+        MAX_AMPLITUDE   = 8192 # half of a 14 bit integer
         MAX_MEASUREMENT = 519 # degrees / second
         FACTOR = MAX_AMPLITURE / MAX_MEASUREMENT
 
@@ -59,7 +59,7 @@ module BBB
         def initialize
           @value = 0
           @slow = 0
-          @calibration_zero = 8,063 # has to be adjusted during calibration
+          @calibration_zero = 8063 # has to be adjusted during calibration
           @calibration_values = []
         end
 
