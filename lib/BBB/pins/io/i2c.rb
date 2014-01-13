@@ -31,7 +31,7 @@ module BBB
           tree = pin_map.devicetree
           system("echo #{tree} > #{cape_dir}")
           sleep(0.2) # Give the kernel time to load the cape
-          @backend = I2C.create(pin_map.path)
+          @backend = ::I2C.create(pin_map.path)
         end
 
         def write(address, *params)
