@@ -52,7 +52,7 @@ module BBB
 
         MAX_AMPLITUDE   = 8192 # half of a 14 bit integer
         MAX_MEASUREMENT = 519 # degrees / second
-        FACTOR = MAX_AMPLITURE / MAX_MEASUREMENT
+        FACTOR = MAX_AMPLITUDE / MAX_MEASUREMENT
 
         HIGH_MASK = 0b11111100
 
