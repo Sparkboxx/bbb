@@ -8,13 +8,13 @@ module BBB
       end
 
       def write(address, *params)
-        @io.read(address, *params)
+        @io.write(address, *params)
       end
 
       private
 
       def default_io
-        IO::I2C.new(postition)
+        IO::I2C.new(position)
       end
 
     end

@@ -35,11 +35,11 @@ module BBB
         end
 
         def write(address, *params)
-          @backend.write(address, params)
+          @backend.write(address, *params)
         end
 
         def read(address, size, *params)
-          @backend.read(address, size, params)
+          @backend.read(address, size, *params)
         end
 
         def pin_map_key
