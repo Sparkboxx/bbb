@@ -232,5 +232,10 @@ module BBB
 
       end
     end
+    ##
+    # Convenience class name for WiiMotionPlus
+    #
+    class WMP < WiiMotionPlus
+    end
   end
 end
