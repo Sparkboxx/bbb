@@ -57,7 +57,7 @@ module BBB
       end
 
       def update
-        reading = i2c.read(0x52, 6, 0x00)
+        reading = i2c.read(0x52, 6, 0x00).bytes.to_a
         @gyro.update(reading)
         set_extension(reading)
       end
