@@ -34,7 +34,11 @@ module BBB
       end
 
       def start
-        i2c.write(0x53, 0xfe, 0x04)
+        begin #check if we can already read, if so, we're already started.
+          raw_read
+        rescue I2C::AckError
+          i2c.write(0x53, 0xfe, 0x04)
+        end
         @started = true
       end
 
@@ -57,7 +61,7 @@ module BBB
       end
 
       def update
-        bytes = i2c.read(0x52, 6, 0x00).bytes.to_a
+        bytes = raw_read.bytes.to_a
         @gyro.update(bytes)
         set_extension(bytes)
       end
@@ -70,7 +74,23 @@ module BBB
         pins.first
       end
 
-      class AxisValue
+      def pitch
+        gyro.pitch
+      end
+
+      def yaw
+        gyro.yaw
+      end
+
+      def roll
+        gyro.roll
+      end
+
+      def raw_read
+        i2c.read(0x52, 6, 0x00)
+      end
+
+      class BBB::Components::WiiMotionPlus::AxisValue
         attr_reader :value, :slow, :zero_value
 
         MAX_AMPLITUDE   = 8192 # half of a 14 bit integer
@@ -81,7 +101,7 @@ module BBB
         def initialize
           @value = 0
           @slow = 0
-          @calibration_zero = 8063 # has to be adjusted during calibration
+          @zero_value = 8063 # has to be adjusted during calibration
           @calibration_values = []
         end
 
@@ -92,7 +112,7 @@ module BBB
         end
 
         def degrees
-          (value - calibration_zero) / FACTOR * slow_correction
+          (value - zero_value) / FACTOR * slow_correction
         end
 
         def start_calibration!
@@ -102,7 +122,7 @@ module BBB
         def stop_calibration!
           @calibrating = false
           arr = @calibration_values
-          @calibration_zero = arr.inject(0) { |sum, el| sum + el } / arr.size
+          @zero_value = arr.inject(0) { |sum, el| sum + el } / arr.size
           @calibration_values = []
         end
 
