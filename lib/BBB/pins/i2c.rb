@@ -4,11 +4,11 @@ module BBB
       include Pinnable
 
       def read(address, size, *params)
-        @io.read(address, size, *params)
+        io.read(address, size, *params)
       end
 
       def write(address, *params)
-        @io.write(address, *params)
+        io.write(address, *params)
       end
 
       private
