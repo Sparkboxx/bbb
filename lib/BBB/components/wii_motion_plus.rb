@@ -31,7 +31,7 @@ module BBB
         @started = false
         @calibrated = false
         @gyro = Gyro.new
-        @positions = options.fetch(:i2c, nil)
+        @positions = [options.fetch(:i2c, nil)].compact
       end
 
       def start
