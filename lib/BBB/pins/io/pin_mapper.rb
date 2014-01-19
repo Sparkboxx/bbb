@@ -207,7 +207,7 @@ module BBB
             end
             instance[:filesystem] = filesystem
 
-            hash[instance.devicetree] = instance
+            hash[filesystem] = instance
           end
 
           return hash
