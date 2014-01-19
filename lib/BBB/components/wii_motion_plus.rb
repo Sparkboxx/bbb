@@ -1,8 +1,31 @@
 module BBB
   module Components
+    ##
+    # WiiMotionPlus I2C component. Attach to P9 like this:
+    #  Nunchuck/ WMP connector:
+    # ---------
+    # | 1 2 3 |
+    # |       |
+    # | 6 5 4 |
+    # | ----- |
+    # |_|   |_|
+    #
+    # Connections from NunChuck to BeagleBone "P9" connector:
+    #
+    # pin 1: green: system data - connect to BeagleBone pin 20 (I2C2_SDA)
+    # pin 2: (not connected)
+    # pin 3: red: DC 3.3V supply - to BeagleBone pin 3 or pin 4 (DC_3.3V)
+    # pin 4: yellow - system clock - to BeagleBone pin 19 (I2C2_SCL)
+    # pin 5: ("ATT" - not needed)
+    # pin 6: white - GND - to BeagleBone pin 1 or pin 2 (GND)
+    #
+    # Copied from: http://www.alfonsomartone.itb.it/mzscbb.html
+    #
     class WiiMotionPlus
       include Pinnable
       uses Pins::I2C
+
+      attr_reader :gyro
 
       def initialize
         @started = false
@@ -34,7 +57,7 @@ module BBB
       end
 
       def update
-        reading = i2c.read(0x52, 0x00)
+        reading = i2c.read(0x52, 6, 0x00)
         @gyro.update(reading)
         set_extension(reading)
       end

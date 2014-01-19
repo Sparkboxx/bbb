@@ -28,7 +28,7 @@ module BBB
         end
 
         def export
-          if pin_map.devicetee
+          if pin_map.respond_to?(:devicetee)
             system("echo #{pinmap.devicetree} > #{cape_dir}")
           end
           sleep(0.2) # Give the kernel time to load the cape
