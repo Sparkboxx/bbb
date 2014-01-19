@@ -25,12 +25,13 @@ module BBB
       include Pinnable
       uses Pins::I2C
 
-      attr_reader :gyro
+      attr_reader :gyro, :positions
 
-      def initialize
+      def initialize(options = {})
         @started = false
         @calibrated = false
         @gyro = Gyro.new
+        @positions = options.fetch(:i2c, nil)
       end
 
       def start
