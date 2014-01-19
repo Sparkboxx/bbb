@@ -18,18 +18,19 @@ module BBB
         #
         # @param cape [String] The cape name of the I2C chip.
         #
-        def initialize(cape)
-          @cape = cape
+        def initialize(path)
+          @path = path
           self.export
         end
 
         def position
-          @cape
+          @path
         end
 
         def export
-          tree = pin_map.devicetree
-          system("echo #{tree} > #{cape_dir}")
+          if pin_map.devicetee
+            system("echo #{pinmap.devicetree} > #{cape_dir}")
+          end
           sleep(0.2) # Give the kernel time to load the cape
           @backend = ::I2C.create(pin_map.path)
         end
@@ -43,7 +44,7 @@ module BBB
         end
 
         def pin_map_key
-          :devicetree
+          :path
         end
 
       end
