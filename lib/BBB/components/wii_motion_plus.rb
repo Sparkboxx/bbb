@@ -147,7 +147,7 @@ module BBB
       # http://wiibrew.org/wiki/Wiimote/Extension_Controllers/Wii_Motion_Plus
       #
       # The YAW, PITCH and ROLL values are 14 bit integers
-      # (maximum value = 2^14 - 1 = 8191).
+      # (maximum value = 2^14 - 1 = 16383).
       #
       # The first 8 bits are available in the first Byte. The last 6 bits are
       # available in bits 8 to 13 in byte 3.
@@ -213,19 +213,19 @@ module BBB
         end
 
         def set_yaw(bytes)
-          value = (bytes[3] & HIGH_MASK) << 8 | bytes[0]
+          value = (bytes[3] & HIGH_MASK) << 6 | bytes[0]
           slow = bytes[3] & 0b00000010 >> 1
           yaw.update(value, slow)
         end
 
         def set_pitch(bytes)
-          value = (bytes[4] & HIGH_MASK) << 8 | bytes[1]
+          value = (bytes[4] & HIGH_MASK) << 6 | bytes[1]
           slow = bytes[3] & 0b00000001
           pitch.update(value, slow)
         end
 
         def set_roll(bytes)
-          value = (bytes[5] & HIGH_MASK) << 8 | bytes[2]
+          value = (bytes[5] & HIGH_MASK) << 6 | bytes[2]
           slow = bytes[4] & 0b00000010 >> 1
           roll.update(value, slow)
         end
