@@ -91,7 +91,7 @@ module BBB
         i2c.read(0x52, 6, 0x00)
       end
 
-      class BBB::Components::WiiMotionPlus::AxisValue
+      class AxisValue
         attr_reader :value, :slow, :zero_value
 
         MAX_AMPLITUDE   = 8192 # half of a 14 bit integer
@@ -113,7 +113,7 @@ module BBB
         end
 
         def degrees
-          (value - zero_value) / FACTOR * slow_correction
+          value / FACTOR * slow_correction
         end
 
         def value
