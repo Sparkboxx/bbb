@@ -60,6 +60,7 @@ module BBB
           @pins << pin.new(positions[index], opts)
         end
         after_pin_initialization
+        return self # so that we can chain it with the initializer
       end
 
       ##
