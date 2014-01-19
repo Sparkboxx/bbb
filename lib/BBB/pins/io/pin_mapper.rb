@@ -58,7 +58,7 @@ module BBB
         def self.map(pin_symbol)
           @map ||= convert(PIN_MAP_FILE)
           begin
-            sym = pin_symbol.upcase
+            sym = pin_symbol #pin_symbol.upcase
             map = @map.pins.fetch(sym, nil)
             map = @map.i2c.fetch(sym) if map.nil?
 
