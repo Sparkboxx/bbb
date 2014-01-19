@@ -57,13 +57,13 @@ module BBB
       end
 
       def update
-        reading = i2c.read(0x52, 6, 0x00).bytes.to_a
-        @gyro.update(reading)
-        set_extension(reading)
+        bytes = i2c.read(0x52, 6, 0x00).bytes.to_a
+        @gyro.update(bytes)
+        set_extension(bytes)
       end
 
-      def set_extension(reading)
-        @extension_set = reading.bytes[4] & 0b00000001
+      def set_extension(bytes)
+        @extension_set = bytes[4] & 0b00000001
       end
 
       def i2c
@@ -184,27 +184,27 @@ module BBB
           @calibrating = false
         end
 
-        def update(reading)
-          set_yaw(reading)
-          set_pitch(reading)
-          set_roll(reading)
+        def update(bytes)
+          set_yaw(bytes)
+          set_pitch(bytes)
+          set_roll(bytes)
         end
 
-        def set_yaw(reading)
-          value = (reading.bytes[3] & HIGH_MASK) << 8 | reading.bytes[0]
-          slow = reading.bytes[3] & 0b00000010
+        def set_yaw(bytes)
+          value = (bytes[3] & HIGH_MASK) << 8 | bytes[0]
+          slow = bytes[3] & 0b00000010
           yaw.update(value, slow)
         end
 
-        def set_pitch(reading)
-          value = (reading.bytes[4] & HIGH_MASK) << 8 | reading.bytes[1]
-          slow = reading.bytes[3] & 0b00000001
+        def set_pitch(bytes)
+          value = (bytes[4] & HIGH_MASK) << 8 | bytes[1]
+          slow = bytes[3] & 0b00000001
           pitch.update(value, slow)
         end
 
-        def set_roll(reading)
-          value = (reading.bytes[5] & HIGH_MASK) << 8 | reading.bytes[2]
-          slow = reading.bytes[4] & 0b00000010
+        def set_roll(bytes)
+          value = (bytes[5] & HIGH_MASK) << 8 | bytes[2]
+          slow = bytes[4] & 0b00000010
           roll.update(value, slow)
         end
 
