@@ -77,7 +77,6 @@ module BBB
         MAX_MEASUREMENT = 519 # degrees / second
         FACTOR = MAX_AMPLITUDE / MAX_MEASUREMENT
 
-        HIGH_MASK = 0b11111100
 
         def initialize
           @value = 0
@@ -161,6 +160,8 @@ module BBB
       #
       #
       class Gyro
+        HIGH_MASK = 0b11111100
+
         attr_reader :yaw, :pitch, :roll
 
         def initialize
@@ -192,7 +193,7 @@ module BBB
 
         def set_yaw(bytes)
           value = (bytes[3] & HIGH_MASK) << 8 | bytes[0]
-          slow = bytes[3] & 0b00000010
+          slow = bytes[3] & 0b00000010 >> 1
           yaw.update(value, slow)
         end
 
@@ -204,7 +205,7 @@ module BBB
 
         def set_roll(bytes)
           value = (bytes[5] & HIGH_MASK) << 8 | bytes[2]
-          slow = bytes[4] & 0b00000010
+          slow = bytes[4] & 0b00000010 >> 1
           roll.update(value, slow)
         end
 
