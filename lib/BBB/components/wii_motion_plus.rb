@@ -116,6 +116,10 @@ module BBB
           (value - zero_value) / FACTOR * slow_correction
         end
 
+        def value
+          @value - @zero_value
+        end
+
         def start_calibration!
           @calibrating = true
         end

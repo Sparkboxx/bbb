@@ -19,6 +19,7 @@ require "BBB/pins/digital_pin"
 require "BBB/pins/analog_pin"
 require "BBB/pins/pwm_pin"
 require "BBB/pins/i2c"
+require "BBB/pins/esc"
 
 require "BBB/components/pinnable"
 require "BBB/components/analog_component"

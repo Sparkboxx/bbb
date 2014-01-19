@@ -20,7 +20,7 @@ module BBB
       end
 
       def speed(value)
-        self.duty = max_value - value * self.duty_range
+        self.duty = max_duty - value * self.duty_range
       end
 
       def calibrate
