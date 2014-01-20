@@ -6,7 +6,7 @@ module BBB
       module ClassMethods
         ##
         # Register the use of classes of pins to a class. These classes will be
-        # initialized upon #initialize_pins
+        # initialized upon #connect
         #
         # @param pin_classes [Array<Class>] the classes to register on class
         #   level.
@@ -47,7 +47,7 @@ module BBB
       #
       # @return Array[Pins]
       #
-      def initialize_pins(*positions)
+      def connect(*positions)
         positions = self.positions if positions.empty?
 
         positions.flatten!
@@ -67,7 +67,7 @@ module BBB
       # Verifies if the number of pins registered in the @pins array match with
       # the number of pins provided as an argument to the method. This function
       # normally gets called as part of the initialize pins method to verify if
-      # the positions given to the initialize_pins method matches the number of
+      # the positions given to the connect method matches the number of
       # registered pins.
       #
       # @param positions [Array<Symbol>] The array of positions

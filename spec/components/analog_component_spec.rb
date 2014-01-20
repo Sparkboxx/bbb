@@ -15,7 +15,7 @@ describe BBB::Components::AnalogComponent do
   context "initialized" do
     before :each do
       @c = component
-      @c.initialize_pins(:P8_13)
+      @c.connect(:P8_13)
     end
 
     it "#pin" do
@@ -30,6 +30,11 @@ describe BBB::Components::AnalogComponent do
     it "#value aliasses #read" do
       @c.should_receive(:read)
       @c.value
+    end
+
+    it "can intitialize with a pin position" do
+      c = component_class.new(:pin=>:P8_13)
+      c.positions.should == [:P8_13]
     end
   end
 

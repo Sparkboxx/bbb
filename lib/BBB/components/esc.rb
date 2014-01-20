@@ -4,13 +4,16 @@ module BBB
       include Pinnable
       uses Pins::PWMPin
 
+      attr_reader :positions
+
       attr_accessor :min_duty, :max_duty, :period
       attr_reader :duty
 
-      def initialize(period=20e6, min_duty=17.5e6, max_duty=19e6)
+      def initialize(period=20e6, min_duty=17.5e6, max_duty=19e6, options={})
         @period   = period
         @min_duty = min_duty
         @max_duty = max_duty
+        @positions = [options.fetch(:pins, nil)].compact
       end
 
       def after_pin_initialization

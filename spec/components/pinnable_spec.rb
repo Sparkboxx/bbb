@@ -18,11 +18,11 @@ describe BBB::Components::Pinnable do
   let(:dummy) { DummyComponent }
   let(:double_dummy) { DoubleDummyComponent }
 
-  context "#initialize_pins" do
+  context "#connect" do
     it "with single position" do
       DummyPin.should_receive(:new).once.and_return(@mock_pin)
       c = dummy.new
-      c.initialize_pins(:P8_3)
+      c.connect(:P8_3)
       c.pins[0].should eql(@mock_pin)
     end
 
@@ -30,14 +30,14 @@ describe BBB::Components::Pinnable do
       DummyPin.should_receive(:new).with(:P8_3, {:key=>"value"}).once
         .and_return(@mock_pin)
       c = dummy.new
-      c.initialize_pins(:P8_3, key: "value")
+      c.connect(:P8_3, key: "value")
       c.pins[0].should eql(@mock_pin)
     end
 
     it "with multiple positions" do
       DummyPin.should_receive(:new).exactly(2).times.and_return(@mock_pin)
       c = double_dummy.new
-      c.initialize_pins(:P8_3, :P8_4)
+      c.connect(:P8_3, :P8_4)
       c.pins[0].should eql(@mock_pin)
       c.pins[1].should eql(@mock_pin)
     end
@@ -48,7 +48,7 @@ describe BBB::Components::Pinnable do
       DummyPin.should_receive(:new).with(:P8_4, {:key=>"value"}).once
         .and_return(@mock_pin)
       c = double_dummy.new
-      c.initialize_pins(:P8_3, :P8_4, key: "value")
+      c.connect(:P8_3, :P8_4, key: "value")
       c.pins[0].should eql(@mock_pin)
       c.pins[1].should eql(@mock_pin)
     end
@@ -56,7 +56,7 @@ describe BBB::Components::Pinnable do
     it "verifies the pin count" do
       c = dummy.new
       c.should_receive(:verify_pin_position_count).with([:P8_3])
-      c.initialize_pins(:P8_3)
+      c.connect(:P8_3)
     end
   end
 

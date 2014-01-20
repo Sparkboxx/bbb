@@ -11,7 +11,14 @@ module BBB
     class AnalogComponent
       include Pinnable
 
+      attr_reader :positions
+
       uses BBB::Pins::AnalogPin
+
+      def initialize(options={})
+        @positions = [options.fetch(:pin, nil)].compact
+      end
+
 
       ##
       # Read from an initialized pin, if the pins have not been initialized yet,

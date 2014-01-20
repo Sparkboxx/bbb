@@ -63,4 +63,5 @@ describe BBB::Pins::DigitalPin do
       input.send(:default_io)
     end
   end
+
 end

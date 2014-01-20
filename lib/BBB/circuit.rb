@@ -39,7 +39,7 @@ module BBB
       pin_positions = opts.delete(:pins) || [opts.delete(:pin)]
       pin_options   = {:mock=>self.mock?}.merge!(opts)
 
-      component.initialize_pins(pin_positions, pin_options)
+      component.connect(pin_positions, pin_options)
       define_method_for_component(component, name)
     end
 

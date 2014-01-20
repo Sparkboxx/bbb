@@ -4,7 +4,7 @@ describe BBB::Components::Led do
   let(:led) {BBB::Components::Led.new}
 
   before :each do
-    led.initialize_pins(:P8_4, mock: true)
+    led.connect(:P8_4, mock: true)
   end
 
   it "initializes off" do
