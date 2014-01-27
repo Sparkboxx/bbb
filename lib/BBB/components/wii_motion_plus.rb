@@ -71,21 +71,10 @@ module BBB
         @extension_set = bytes[4] & 0b00000001
       end
 
-      def i2c
-        pins.first
-      end
-
-      def pitch
-        gyro.pitch
-      end
-
-      def yaw
-        gyro.yaw
-      end
-
-      def roll
-        gyro.roll
-      end
+      def i2c   ; pins.first ; end
+      def pitch ; gyro.pitch ; end
+      def yaw   ; gyro.yaw   ; end
+      def roll  ; gyro.roll  ; end
 
       def raw_read
         i2c.read(0x52, 6, 0x00)
@@ -97,7 +86,6 @@ module BBB
         MAX_AMPLITUDE   = 8192 # half of a 14 bit integer
         MAX_MEASUREMENT = 519 # degrees / second
         FACTOR = MAX_AMPLITUDE / MAX_MEASUREMENT
-
 
         def initialize
           @value = 0
