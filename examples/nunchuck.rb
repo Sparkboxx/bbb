@@ -37,10 +37,6 @@ class NunchuckServer < Sinatra::Base
   set :nunchuck, NunchuckService.new.start
   enable :inline_templates
 
-  get '/test' do
-    "Testing 234"
-  end
-
   get '/' do
     if !request.websocket?
       erb :index
@@ -48,6 +44,7 @@ class NunchuckServer < Sinatra::Base
       request.websocket do |ws|
         ws.onopen do
           ws.send("Hello World!")
+          ws.send("Opened the websocket")
           settings.sockets << ws
           settings.nunchuck.add_socket(ws)
         end

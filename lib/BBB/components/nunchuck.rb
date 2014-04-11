@@ -10,7 +10,7 @@ module BBB
         @started
         @positions     = options[:i2c] || []
         @accelerometer = Accelerometer.new
-        @controls      = Control.new
+        @controls      = Controls.new
         @decoder       = Decoder.new
       end
 
@@ -77,7 +77,7 @@ module BBB
           z.update(value)
         end
 
-        class AccelAcces
+        class AccelAccess
           attr_reader :value
 
           def update(value)
@@ -96,6 +96,14 @@ module BBB
           @buttons = Hash.new
           @buttons[:z] = Button.new
           @buttons[:c] = Button.new
+        end
+
+        def c
+          @buttons[:c]
+        end
+
+        def z
+          @buttons[:z]
         end
 
         def initialize_axis
@@ -181,10 +189,6 @@ module BBB
 
           def on_change
             @change_callbacks.each{|c| c.call(value) }
-          end
-
-          def on_change<<(method)
-            @change_callbacks << method
           end
         end
       end
