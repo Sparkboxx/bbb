@@ -4,32 +4,38 @@ module BBB
       include Pinnable
       uses Pins::PWMPin
 
-      attr_reader :positions
-
       attr_accessor :min_duty, :max_duty, :period
-      attr_reader :duty
 
-      def initialize(period=20e6, min_duty=17.5e6, max_duty=19e6, options={})
-        @period   = period
-        @min_duty = min_duty
-        @max_duty = max_duty
-        @positions = [options.fetch(:pins, nil)].compact
-      end
+      after_connect :setup_pin
 
-      def after_pin_initialization
-        self.disarm
-        self.period = @period
-        self.duty   = max_duty
+      ##
+      # Initialize a new ESC using default values for period, min_duty and
+      #   max_duty if present. Please beware that at initialization stage there
+      #   is no initialized PWM pin yet. So you can set the period and the
+      #   min/max_duty instance variables, but not the variables on the pin.
+      #   Only after "connecting" the esc to a board can you set the duty and
+      #   period of the pin. Use the "after pin initialization" method for that.
+      #
+      def initialize(options={})
+        set_options
+
+        @period = options.fetch(:period, 20e6)
+        @speed  = 0
+
+        @min_duty = options.fetch(:min_duty, 17.5e6)
+        @max_duty = options.fetch(:max_duty, 19e6)
       end
 
       def speed(value)
-        self.duty = max_duty - value * self.duty_range
+        @speed = value
+        @duty = max_duty - value * duty_range
+        synchronize_duty
       end
 
       def calibrate
         pwm.run = 0
-        puts "Disconnect the battery of the motor"; gets
-        puts "Get ready to connect the battery after 2 seconds, ready?"; gets
+        puts "Disconnect the battery of the motor (press any key)"; gets
+        puts "Get ready to connect the battery after 2 seconds, ready? (press any key)"; gets
         speed(1)
         pwm.run = 1
         puts "one missisipi"; sleep(1)
@@ -57,20 +63,32 @@ module BBB
 
       def duty=(value)
         @duty = value
-        pwm.duty = @duty
+        synchronize_duty
       end
 
       def period=(value)
         @period = value
-        pwm.period = value
+        synchronize_period
       end
+
+      def pwm
+        pin
+      end
+
+      private
 
       def duty_range
         max_duty - min_duty
       end
 
-      def pwm
-        pins.first
+      def synchronize_period
+        pwm.period = @period
+      end
+
+      def after_pin_initialization
+        disarm
+        synchronize_period
+        speed(0)
       end
     end
   end

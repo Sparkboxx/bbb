@@ -1,24 +1,15 @@
 require 'BBB'
 
 ##
-# Setup the LED Circuit
-#
-class Circuit < BBB::Circuit
-  def initialize
-    # Attach the led to pin P8_10
-    attach BBB::Components::Led, pin: :P8_10, as: :led
-  end
-end
-
-##
 # Setup the actual Application
 #
 class LedExampleApplication < BBB::Application
-  # Run this on the BeableBoneBlack
-  board BBB::Board::Base.new
+  # Connect the led
+  attach BBB::Components::Led, as: :led
 
-  # Connect the led circuit
-  circuit Circuit.new
+  def activate_components
+    led.connect(:P8_10)
+  end
 
   # This is the basic run loop
   def run

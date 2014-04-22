@@ -7,7 +7,7 @@ module BBB
       attr_reader :accelerometer, :controls
 
       def initialize(options={})
-        @started
+        @started       = false
         @positions     = options[:i2c] || []
         @accelerometer = Accelerometer.new
         @controls      = Controls.new

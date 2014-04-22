@@ -9,7 +9,7 @@ describe BBB::Components::AnalogComponent do
   end
 
   it "registers AnalogPin" do
-    component_class.pins.should eql([BBB::Pins::AnalogPin])
+    component_class.pin_classes.should eql([BBB::Pins::AnalogPin])
   end
 
   context "initialized" do

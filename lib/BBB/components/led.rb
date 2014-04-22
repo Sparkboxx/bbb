@@ -16,15 +16,6 @@ module BBB
       uses BBB::Pins::DigitalOutputPin
 
       ##
-      # Convenience method to grab the first pin in the pins array
-      #
-      # @return BBB::Pins::DigitalOutputPin
-      #
-      def pin
-        pins.first
-      end
-
-      ##
       # Turns on the LED
       # @return void
       #

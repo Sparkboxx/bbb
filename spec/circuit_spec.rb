@@ -11,31 +11,28 @@ describe BBB::Circuit do
 
   context "#attach" do
     it "initializes object when passed a class" do
-      c.attach led, as: :led
-      c.components.values.first.class.should eql(led)
+      c.class.attach led, as: :led
+      c.led.class.should eql(led)
     end
 
     it "keeps instance when passed an instance" do
       instance = led.new
-      c.attach instance, as: :instance
-      c.components.values.first.should eql(instance)
+      c.class.attach instance, as: :instance
+      c.instance.should eql(instance)
     end
 
     context "naming" do
       it "downcases class names" do
         l = led.new
-        c.attach l, as: :led
+        c.class.attach l, as: :led
         c.led.should eql(l)
-        c.components[:led].should eql(l)
       end
     end
 
   end
 
   class TestAttachCircuit < BBB::Circuit
-    def initialize
-      attach BBB::Components::Led, pin: :P8_1, as: :led
-    end
+    attach BBB::Components::Led, as: :led
   end
 
   it "knows about the attached led" do

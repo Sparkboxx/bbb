@@ -32,7 +32,7 @@ module BBB
       end
 
       ##
-      # Return wheter or not this is a mock pin
+      # Returns if this is a mock pin.
       #
       # @return [Boolean]
       #
@@ -57,12 +57,12 @@ module BBB
       # point the developer into the right direction.
       #
       # The default_io method should return an instantiated object that makes
-      # the inteface between the filesystem, drivers etc, and the ruby code.
+      # the interface between the filesystem, drivers etc, and the ruby code.
       # Probably the object will behave like an IO object, relying on the linux
       # kernel and drivers to get things done on the board.
       #
       def default_io
-        raise NotImplementedError
+        fail NotImplementedError
       end
 
       ##

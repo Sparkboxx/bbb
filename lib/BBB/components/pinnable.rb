@@ -2,17 +2,18 @@ module BBB
   module Components
     module Pinnable
       attr_reader :pins
+      attr_reader :positions
 
       module ClassMethods
         ##
         # Register the use of classes of pins to a class. These classes will be
         # initialized upon #connect
         #
-        # @param pin_classes [Array<Class>] the classes to register on class
+        # @param classes [Array<Class>] the classes to register on class
         #   level.
         #
-        def uses(*pin_classes)
-          pins.concat(pin_classes)
+        def uses(*classes)
+          pin_classes.concat(classes)
         end
 
         ##
@@ -20,9 +21,26 @@ module BBB
         #
         # @return Array<Class>
         #
-        def pins
-          @pins ||= []
+        def pin_classes
+          @pin_classes ||= []
         end
+
+        ##
+        # Register callbacks
+        #
+        def after_connect(callback)
+          after_connect_callbacks << callback
+        end
+
+        ##
+        # Convenience function on class level that holds the callbacks (anything
+        # that responds to call OR a symbol) that need to be called after the
+        # pins get connected.
+        #
+        def after_connect_callbacks
+          @after_connect_callbacks ||= []
+        end
+
       end
 
       def self.included(base)
@@ -56,12 +74,14 @@ module BBB
         verify_pin_position_count(positions)
 
         @pins = []
-        self.class.pins.each_with_index do |pin, index|
+        self.class.pin_classes.each_with_index do |pin, index|
           @pins << pin.new(positions[index], opts)
         end
-        after_pin_initialization
+        after_connect_callbacks
         return self # so that we can chain it with the initializer
       end
+
+      alias_method :pin_initialization, :connect
 
       ##
       # Verifies if the number of pins registered in the @pins array match with
@@ -79,17 +99,20 @@ module BBB
       #
       # @return Void
       def verify_pin_position_count(positions)
-        if self.class.pins.count != positions.count
-          raise PinsDoNotMatchException,
-            "#{self.class.to_s} requires #{self.class.pins.count} but received #{positions.count} pin position."
+        if self.class.pin_classes.count != positions.count
+          fail PinsDoNotMatchException,
+            "#{self.class.to_s} requires #{self.class.pin_classes.count} but received #{positions.count} pin position."
         end
       end
 
-      ##
-      # Method which classes can overwrite to hook into the after pin
-      # initialization
-      #
-      def after_pin_initialization
+      def after_connect_callbacks
+        self.class.after_connect_callbacks.each do |callback|
+          if callback.responds_to?(:call)
+            callback.call
+          else
+            self.send(callback)
+          end
+        end
       end
 
       ##
@@ -97,8 +120,34 @@ module BBB
       # included in an object
       #
       # @return true
+      #
       def pinnable?
         true
+      end
+
+      ##
+      # Convenience method to grab the first pin in the pins array
+      #
+      # @return BBB::Pins::AnalogPin
+      #
+      def pin
+        pins.first
+      end
+
+      ##
+      # Provide a default initializer
+      #
+      def initialize(options={})
+        set_options(options)
+      end
+
+      ##
+      # Provide a function to handle the options
+      #
+      # @param options [Hash]
+      #
+      def set_options(options)
+        @positions = [options.fetch(:pin, nil)].compact
       end
     end
   end

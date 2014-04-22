@@ -7,31 +7,21 @@ describe BBB::Application do
   end
 
   class TestLedCircuit < BBB::Circuit
-    def initialize
-      attach BBB::Components::Led, pin: :P8_3, as: :led
-    end
+    attach BBB::Components::Led, as: :led
   end
 
   class TestConnectionApp < BBB::Application
-    circuit TestLedCircuit.new
-
-    def run
-      "yeah, this one!"
-    end
+    attach TestLedCircuit, as: :circuit
   end
 
   it "attaches virtual pins to board pins" do
     app = TestConnectionApp.new
-
     app.circuit.respond_to?(:led).should be_true
-    app.circuit.led.should_receive(:on!)
-
-    app.led.should eql(app.circuit.led)
-    app.led.on!
+    app.circuit.led.respond_to?(:on!).should be_true
   end
 
   class FunctionsInApp < BBB::Application
-    circuit TestLedCircuit.new
+    attach TestLedCircuit.new, as: :circuit
 
     def run
       raise StopIteration

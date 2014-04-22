@@ -81,4 +81,14 @@ describe BBB::Components::Pinnable do
     c = dummy.new
     c.pinnable?.should be_true
   end
+
+  context "callbacks" do
+    context "after_connect" do
+      it "should use send on function name" do
+      end
+
+      it "should call if given a proc" do
+      end
+    end
+  end
 end

@@ -26,7 +26,7 @@ describe BBB::Components::Servo do
       %w(period duty run).each do |method|
         @pin.should_receive("#{method}=".to_sym)
       end
-      @servo.after_pin_initialization
+      @servo.send(:after_pin_initialization)
     end
   end
 
@@ -48,7 +48,5 @@ describe BBB::Components::Servo do
       @servo.angle(100)
     end
   end
-
-
 
 end
