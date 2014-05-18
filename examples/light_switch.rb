@@ -15,11 +15,14 @@ class LightSwitch < BBB::Application
   end
 
   def run
-    if current_button_state != last_button_state
-      if led.on?
-        led.off!
-      else
-        led.on!
+    update_button_state
+    if current_button_state != last_button_state 
+      if current_button_state == true
+        if led.on?
+          led.off!
+        else
+          led.on!
+        end
       end
       store_button_state
     end
@@ -27,8 +30,12 @@ class LightSwitch < BBB::Application
 
   private
 
-  def current_button_state
+  def update_button_state
     @button_state = button.high?
+  end
+
+  def current_button_state
+    @button_state
   end
 
   def last_button_state
