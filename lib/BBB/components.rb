@@ -1,4 +1,5 @@
 require "BBB/components/pinnable"
+require "BBB/components/button"
 require "BBB/components/analog_component"
 require "BBB/components/led"
 require "BBB/components/esc"
