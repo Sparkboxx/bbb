@@ -7,7 +7,7 @@ class LedExampleApplication < BBB::Application
   # Connect the led
   attach BBB::Components::Led, as: :led
 
-  def activate_components
+  def initialize
     led.connect(:P8_10)
   end
 

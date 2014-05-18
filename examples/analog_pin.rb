@@ -21,28 +21,14 @@
 require 'BBB'
 
 ##
-# Setup the AnalogPin Circuit
-#
-class Circuit < BBB::Circuit
-  def initialize
-    # Attach temperature sensor to pin P9_40
-    attach BBB::Components::AnalogComponent, pin: :P9_40, as: :thermometer
-  end
-end
-
-##
 # Setup the actual Applicaiton
 #
 class TemperatureExampleApp < BBB::Application
-  # Run this on the BeagleBoneBlack
-  board BBB::Board::Base.new
-
-  # Connect the circuit to the board
-  circuit Circuit.new
+  attach BBB::Components::AnalogComponent, as: :thermometer
 
   def initialize
+    thermometer.connect(:P9_40)
   end
-
 
   # This is the basic run loop
   def run

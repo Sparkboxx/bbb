@@ -1,22 +1,19 @@
 require 'BBB'
 
-class Circuit < BBB::Circuit
-  include BBB::Components
-
-  def initialize
-    attach Servo, pins: :P8_13, as: :servo
-    attach AnalogComponent, pin: :P9_40, as: :ldr
-  end
-end
-
 class LDRServo < BBB::Application
   attr_accessor :min, :max
 
-  circuit Circuit.new
+  attach Servo, as: :servo
+  attach AnalogComponent, as: :ldr
 
   def initialize(min, max)
     @min = min
     @max = max
+  end
+
+  def activate_components
+    servo.connect(:P8_13)
+    ldr.connect(:P9_40)
   end
 
   def run
@@ -32,3 +29,7 @@ class LDRServo < BBB::Application
   end
 
 end
+
+app = LDRServo.new(0,180)
+app.angle(120)
+
