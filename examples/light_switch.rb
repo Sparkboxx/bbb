@@ -1,4 +1,5 @@
-require 'BBB'
+require_relative '../lib/BBB'
+require 'pry'
 
 class LightSwitch < BBB::Application
   attach BBB::Components::Led, as: :led
@@ -6,10 +7,13 @@ class LightSwitch < BBB::Application
 
   def initialize
     led.connect(:P8_10)
-    button.connect(:P8_12)
+    button.connect(:P8_19)
+
+    led.on!
   end
 
   def run
+    puts "Press the button to switch the light"
     if current_button_state != last_button_state
       if led.on?
         led.off!
@@ -34,4 +38,6 @@ class LightSwitch < BBB::Application
     @last_button_state = @button_state
   end
 end
+
+LightSwitch.new.start
 
