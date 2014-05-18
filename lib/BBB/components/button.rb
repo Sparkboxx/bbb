@@ -3,7 +3,7 @@ module BBB
     class Button
       include Pinnable
 
-      uses BBB::Pins::DigitlInputPin
+      uses BBB::Pins::DigitalInputPin
 
       def high?
         pin.on?

@@ -42,7 +42,7 @@ module BBB
 
         def read
           io.rewind
-          value_map[io.read.to_i]
+          value_map.fetch(io.read.to_i)
         end
 
         def value_map
