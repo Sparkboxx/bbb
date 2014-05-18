@@ -14,6 +14,11 @@ module BBB
         !high
       end
       alias_method :off?, :low?
+
+      def status
+        pin.status
+      end
+      alias_method :state, :status
     end
   end
 end

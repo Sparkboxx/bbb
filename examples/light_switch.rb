@@ -6,18 +6,19 @@ class LightSwitch < BBB::Application
   attach BBB::Components::Button, as: :button
 
   def initialize
-    @button_state = false
     led.connect(:P8_10)
     button.connect(:P8_19)
 
     puts "Press the button to switch the light"
     led.on!
+    read_button_state
   end
 
   def run
-    update_button_state
-    if current_button_state != last_button_state 
-      if current_button_state == true
+    read_button_state
+
+    if current_button_state != last_button_state
+      if current_button_state == :high
         if led.on?
           led.off!
         else
@@ -30,8 +31,8 @@ class LightSwitch < BBB::Application
 
   private
 
-  def update_button_state
-    @button_state = button.high?
+  def read_button_state
+    @button_state = button.state
   end
 
   def current_button_state
