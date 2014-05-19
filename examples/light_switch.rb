@@ -1,5 +1,4 @@
 require_relative '../lib/BBB'
-require 'pry'
 
 class LightSwitch < BBB::Application
   attach BBB::Components::Led, as: :led
