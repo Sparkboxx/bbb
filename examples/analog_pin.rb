@@ -1,10 +1,9 @@
-#
 # To run this example do this first:
 #
 # Make sure you run as root
 # > sudo su
 #
-# Install BBB gem version 0.0.9 or higher
+# Install BBB gem
 # > gem install BBB
 #
 # Then activate the ADC using the cape
@@ -23,8 +22,8 @@ require 'BBB'
 ##
 # Setup the actual Applicaiton
 #
-class TemperatureExampleApp < BBB::Application
-  attach BBB::Components::AnalogComponent, as: :thermometer
+class Thermometer < BBB::Application
+  attach AnalogComponent, as: :thermometer
 
   def initialize
     thermometer.connect(:P9_40)
@@ -37,5 +36,4 @@ class TemperatureExampleApp < BBB::Application
 end
 
 # Initialize the app
-app = TemperatureExampleApp.new
-app.start
+TemperatureExampleApp.new.start if __FILE__ == $0

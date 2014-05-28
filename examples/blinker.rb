@@ -3,7 +3,7 @@ require 'BBB'
 ##
 # Setup the actual Application
 #
-class LedExampleApplication < BBB::Application
+class Blinker < BBB::Application
   # Connect the led
   attach BBB::Components::Led, as: :led
 
@@ -21,5 +21,4 @@ class LedExampleApplication < BBB::Application
 end
 
 # Initialize and run the LedExampleApplication
-app = LedExampleApplication.new
-app.start
+Blinker.new.start if __FILE__ == $0

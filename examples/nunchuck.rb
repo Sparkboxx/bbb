@@ -5,12 +5,15 @@ require 'BBB'
 
 class Circuit < BBB::Circuit
   def initialize
-    attach BBB::Components::Nunchuck, pin: "/dev/i2c-2", as: :nunchuck
   end
 end
 
 class NunchuckService < BBB::Application
-  circuit Circuit.new
+  attach BBB::Components::Nunchuck, as: :nunchuck
+
+  def initialize
+    nunchuck.connect("/dev/i2c-2")
+  end
 
   def start
     Thread.new do
@@ -22,7 +25,7 @@ class NunchuckService < BBB::Application
   end
 
   def add_socket(socket)
-    pressed = lambda { |value| socket.send("{c: 'pressed'}") }
+    pressed  = lambda { |value| socket.send("{c: 'pressed'}") }
     released = lambda { |value| socket.send("{c: 'released'}") }
 
     nunchuck.c.release_callbacks << pressed

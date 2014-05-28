@@ -60,5 +60,6 @@ module BBB
   #
   class Circuit
     include Attachable
+    include Components
   end
 end

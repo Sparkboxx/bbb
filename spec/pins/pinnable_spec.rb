@@ -33,8 +33,10 @@ describe BBB::Pins::Pinnable do
       pin = MockPin.new(:P8_13, mock: false)
       pin.mock?.should be_false
 
-      pin = MockPin.new(:P8_13)
-      pin.mock?.should be_false
+      BBB.escape_test do
+        pin = MockPin.new(:P8_13)
+        pin.mock?.should be_false
+      end
     end
   end
 

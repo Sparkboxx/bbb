@@ -130,49 +130,6 @@ module BBB
           @axis[:y].update(bytes[1])
         end
 
-        class Button
-          attr_reader :status
-          attr_accessor :release_callbacks, :press_callbacks
-
-          def initialize
-            @status = :released
-            @release_callbacks = []
-            @press_callbacks = []
-          end
-
-          def pressed?
-            status == :pressed
-          end
-
-          def press!
-            @status = :pressed
-            on_press if old_state != status
-          end
-
-          def release!
-            old_state = status
-            @status = :released
-            on_release if old_state != status
-          end
-
-          def released?
-            !pressed
-          end
-
-          def update(value)
-            value == true ? release! : press!
-          end
-
-          def on_release
-            @release_callbacks.each{ |c| c.call(status) }
-          end
-
-          def on_press
-            @press_callbacks.each{ |c| c.call(status) }
-          end
-
-        end
-
         class ControlAxis
           attr_accessor :value
           attr_accessor :change_callbacks

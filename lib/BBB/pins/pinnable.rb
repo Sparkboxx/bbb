@@ -37,7 +37,7 @@ module BBB
       # @return [Boolean]
       #
       def mock?
-        @mock ||= @opts.fetch(:mock, false)
+        @mock ||= @opts.fetch(:mock, BBB.configuration.test_mode)
       end
 
       ##

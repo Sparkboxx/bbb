@@ -1,16 +1,15 @@
-#
 # To run this example do this first:
 #
 # Make sure you run as root
 # > sudo su
 #
-# Install BBB gem version 0.0.9 or higher
+# Install BBB gem
 # > gem install BBB
 #
 # Then activate the ADC using the cape
 # > echo cape-bone-iio > /sys/devices/bone_capemgr.*/slots
 #
-# No open up an IRB console and copy paste in this code
+# Now open up an IRB console and copy paste in this code
 # > irb
 #
 # BE CAREFUL:
@@ -21,29 +20,25 @@
 require 'BBB'
 
 ##
-# Setup the AnalogPin Circuit
-#
-class Circuit < BBB::Circuit
-  def initialize
-    # Attach temperature sensor to pin P9_40
-    attach BBB::Components::AnalogComponent, pin: :P9_40, as: :ldr
-    attach BBB::Components::Led, pin: :P8_10, as: :led
-  end
-end
-
-##
 # Setup the actual Applicaiton
 #
-class LightSwitch < BBB::Application
-  # Run this on the BeagleBoneBlack
-  board BBB::Board::Base.new
+class LDRLightSwitch < BBB::Application
+  attr_accessor :threshold
 
-  # Connect the circuit to the board
-  circuit Circuit.new
+  attach AnalogComponent, as: :ldr
+  attach Led, as: :led
+
+  def initialize
+    threshold = 70
+
+    ldr.connect(:P9_40)
+    led.connect(:P8_10)
+    led.off!
+  end
 
   # This is the basic run loop
   def run
-    if ldr.read < 70
+    if ldr.read < threshold
       led.on!
     else
       led.off!
@@ -52,5 +47,4 @@ class LightSwitch < BBB::Application
 end
 
 # Initialize the app
-app = LightSwitch.new
-app.start
+LDRLightSwitch.new.start if __FILE__ == $0

@@ -49,6 +49,25 @@ module BBB
         pin.off?
       end
 
+
+      ##
+      # Returns the status of the current led
+      #
+      def status
+        on? ? :on : :off
+      end
+
+      ##
+      # Toggle the led between on and off
+      #
+      def toggle!
+        if on?
+          off!
+        elsif off?
+          on!
+        end
+      end
+
     end
   end
 end
