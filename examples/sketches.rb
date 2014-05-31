@@ -1,86 +1,72 @@
 require 'bbb'
 
-module Thunderball
-  class Copter << BBB::Application
-    ##
-    # Use the BBB as the board, allows for possible ports to e.g. the Pi
-    #
-    board  BBB::Board.new
+##
+# This is merely a design file. It doesn't work this way yet and functions
+# merely as a way to sketch out how it should work
+#
+class Quadcopter << BBB::Application
 
-    ##
-    # Load the thunderball layout
-    #
-    layout Thunderball::Circuit.new
+  ##
+  # Load 4 ESCs, left-front (lf), right-front (rf), left-back (lb) and
+  # right-back(rb).
+  #
+  # We define them in clockwise order starting front-left, in order to have the
+  # array of escs constructed in a way that we can find them later on.
+  #
+  attach ESC, pins: [:P8_13, :P9_3], as: :esc_lf, group: :escs
+  attach ESC, pins: [:P9_14, :P9_2], as: :esc_rf, group: :escs
+  attach ESC, pins: [:P9_42, :P9_2], as: :esc_rb, group: :escs
+  attach ESC, pins: [:P9_21, :P9_2], as: :esc_lb, group: :escs
 
-    attr_reader :stabalizer, :mover
+  ##
+  # Connect the WMP with the nunchuck as extension
+  #
+  attach WMP, pins: [], as: :wmp, extension: "nunchuck"
 
-    def initialize
-      @stabalizer = Stabalizer.new(escs: escs,
-                                   gyro: gyro,
-                                   accelerometer: acc)
+  attr_reader :stabalizer, :mover
 
-      @mover = Mover.new(escs: escs)
-    end
+  def initialize
+    @stabilizer = Stabilizer.new(escs: escs,
+                                 gyro: gyro,
+                                 accelerometer: acc)
+    @stabilizer.hover
+  end
 
-    ##
-    # Once start is called the run function will be called in a loop
-    #
-    def run
-      stabalizer
-      move(:forward=>20, :right=>10)
-    end
+  def gyro
+    wmp.gyro
+  end
 
-    ##
-    # Stabalize function is just syntactic sugar to make the run method look nice.
-    #
-    def stabilize
-      stabalizer.update
-    end
+  def acc
+    wmp.nunchuck.accelerometer
+  end
 
-    ##
-    # move function is just syntactic sugar to make the run method look nice.
-    #
-    def move
-      mover.update
-    end
-  end # Copter
+  ##
+  # Once start is called the run function will be called in a loop
+  #
+  def run
+    stabilizer.update
+  end
+end # Copter
 
-  class Circuit < BBB::Circuit
-    def initialize
-      attach_escs
-      attach_led
-    end
+def Stabilizer
+  attr_reader :escs, :gyro, :accelerometer
+  attr_reader :mode
 
-    def attach_escs
-      attach ESC, :pins=>[:P8_1, :P8_2], :as=>:esc_1, :group=>:escs
-      attach ESC, :pins=>[:P9_1, :P9_2], :as=>:esc_2, :group=>:escs
-    end
+  def initialize(opts={})
+    @escs          = opts[:escs]
+    @gyo           = opts[:gyro]
+    @accelerometer = opts[:accelerometer]
+    @mode = :hover
+  end
 
-    def attach_leds
-      attach Led, :pin=>:P9_12
-    end
-  end # Circuit
+  def hover
+    @mode = :hover
+  end
 
-  class Mover
-    def initialize(opts={})
-      @escs = opts[:escs]
-    end
+  def update
+    # Do someting complex with all the components
+    # and update all values
+  end
+end #Stabilizer
 
-    def move
-      # Do some complex logic here with the escs
-    end
-  end # Mover
-
-  def Stabalizer
-    def initialize(opts={})
-      @escs          = opts[:escs]
-      @gyo           = opts[:gyro]
-      @accelerometer = opts[:accelerometer]
-    end
-
-    def stabalize
-      # Do someting complex with all the components
-      # and update all values
-    end
-  end #Stabalizer
-end
+Quadcopter.new.start if __FILE__ == $0
