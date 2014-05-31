@@ -3,11 +3,6 @@ require 'sinatra-websocket'
 
 require 'BBB'
 
-class Circuit < BBB::Circuit
-  def initialize
-  end
-end
-
 class NunchuckService < BBB::Application
   attach BBB::Components::Nunchuck, as: :nunchuck
 
@@ -21,15 +16,17 @@ class NunchuckService < BBB::Application
         nunchuck.update
       end
     end
-    self
+    return self
   end
 
   def add_socket(socket)
-    pressed  = lambda { |value| socket.send("{c: 'pressed'}") }
-    released = lambda { |value| socket.send("{c: 'released'}") }
+    nunchuck.c.on_release do
+      socket.send("{c: 'pressed'}")
+    end
 
-    nunchuck.c.release_callbacks << pressed
-    nunchuck.c.press_callbacks << released
+    nunchuck.c.on_press do
+      socket.send("{c: 'released'}")
+    end
   end
 
 end
@@ -37,7 +34,7 @@ end
 class NunchuckServer < Sinatra::Base
   set :server, 'thin'
   set :sockets, []
-  set :nunchuck, NunchuckService.new.start
+  set :nunchuck, NunchuckService.new
   enable :inline_templates
 
   get '/' do
@@ -53,7 +50,7 @@ class NunchuckServer < Sinatra::Base
         end
 
         ws.onclose do
-          warn("wetbsocket closed")
+          warn("websocket closed")
           settings.sockets.delete(ws)
         end
       end
