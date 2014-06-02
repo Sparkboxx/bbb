@@ -24,7 +24,16 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Best thing to do is checkout the example applications in the ```example/```
+folder. The ```nunchuck``` and ```quadcopter``` example are not yet fully
+operational. But the code in the other applications should get you started right
+away.
+
+Beware though, this GEM Is pretty much into a development state, I woudn't even
+call it alpha yet. However, if you have wishes, problems etc. I'd really like to
+know!
+
+Happy Hacking!
 
 ## Contributing
 
@@ -36,7 +45,7 @@ TODO: Write usage instructions here
 
 ## License
 
-Copyright (c) 2013 Wilco van Duinkerken
+Copyright (c) 2014 Wilco van Duinkerken
 
 MIT License
 
