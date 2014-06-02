@@ -1,8 +1,8 @@
 require_relative '../lib/BBB'
 
 class LightSwitch < BBB::Application
-  attach BBB::Components::Led,    as: :led
-  attach BBB::Components::Button, as: :button
+  attach Led,    as: :led
+  attach Button, as: :button
 
   def initialize
     led.connect(:P8_10)

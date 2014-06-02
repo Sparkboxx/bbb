@@ -4,7 +4,7 @@ require 'sinatra-websocket'
 require 'BBB'
 
 class NunchuckService < BBB::Application
-  attach BBB::Components::Nunchuck, as: :nunchuck
+  attach Nunchuck, as: :nunchuck
 
   def initialize
     nunchuck.connect("/dev/i2c-2")
@@ -21,11 +21,11 @@ class NunchuckService < BBB::Application
 
   def add_socket(socket)
     nunchuck.c.on_release do
-      socket.send("{c: 'pressed'}")
+      socket.send("{c: 'released'}")
     end
 
     nunchuck.c.on_press do
-      socket.send("{c: 'released'}")
+      socket.send("{c: 'pressed'}")
     end
   end
 

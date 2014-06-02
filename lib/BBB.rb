@@ -6,6 +6,7 @@ require "BBB/configuration"
 
 require "BBB/pins"
 require "BBB/components"
+require "BBB/attachable"
 require "BBB/circuit"
 require "BBB/exceptions"
 require "BBB/application"

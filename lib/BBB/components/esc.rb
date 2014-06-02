@@ -17,7 +17,7 @@ module BBB
       #   period of the pin. Use the "after pin initialization" method for that.
       #
       def initialize(options={})
-        set_options
+        set_options(options)
 
         @period = options.fetch(:period, 20e6)
         @speed  = 0

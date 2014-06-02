@@ -8,7 +8,7 @@ module BBB
 
       uses BBB::Pins::DigitalInputPin
 
-      def initialize
+      def initialize(options={})
         @status = :released
         @release_callbacks = []
         @press_callbacks = []

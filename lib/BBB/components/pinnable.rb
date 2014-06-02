@@ -147,7 +147,10 @@ module BBB
       # @param options [Hash]
       #
       def set_options(options)
-        @positions = [options.fetch(:pin, nil)].compact
+        @positions = [options[:pin],
+                      options[:pins],
+                      options[:position],
+                      options[:path]].flatten.compact
       end
     end
   end

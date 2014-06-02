@@ -27,11 +27,15 @@ module BBB
 
       attr_reader :gyro, :positions
 
+      ##
+      # the WMP uses I2C pins, so you can give it a name like "I2C2_SDA"
+      #
       def initialize(options = {})
         @started = false
         @calibrated = false
         @gyro = Gyro.new
         @positions = [options.fetch(:i2c, nil)].compact
+        @extension = options[:extension]
       end
 
       def start
