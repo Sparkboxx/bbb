@@ -9,7 +9,7 @@
 # Then activate the ADC using the cape
 # > echo cape-bone-iio > /sys/devices/bone_capemgr.*/slots
 #
-# No open up an IRB console and copy paste in this code
+# Now open up an IRB console and copy paste in this code
 # > irb
 #
 # BE CAREFUL:
@@ -20,7 +20,7 @@
 require 'BBB'
 
 ##
-# Setup the actual Applicaiton
+# Setup the actual Application
 #
 class Thermometer < BBB::Application
   attach AnalogComponent, as: :thermometer
@@ -36,4 +36,4 @@ class Thermometer < BBB::Application
 end
 
 # Initialize the app
-TemperatureExampleApp.new.start if __FILE__ == $0
+Thermometer.new.start if __FILE__ == $0
